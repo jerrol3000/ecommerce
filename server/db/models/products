@@ -1,0 +1,19 @@
+const Sequelize = require("sequelize");
+const db = require("../db");
+
+const Producrts = db.define("products", {
+  name: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  price: {
+    type: Sequelize.DECIMAL(5, 2),
+    allowNull: false,
+  },
+  description: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+});
+
+module.exports = Producrts;
