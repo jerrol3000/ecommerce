@@ -2,7 +2,7 @@
 
 const {
   db,
-  models: { User, Products },
+  models: { User, Product },
 } = require("../server/db");
 
 /**
@@ -76,7 +76,7 @@ async function seed() {
 
     await Promise.all(
       products.map((product) => {
-        return Products.create(product);
+        return Product.create(product);
       })
     ),
   ]);

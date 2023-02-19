@@ -1,8 +1,8 @@
 const path = require("path");
-const morgan = require("morgan");
 const express = require("express");
+const morgan = require("morgan");
 const app = express();
-
+require("dotenv").config();
 module.exports = app;
 
 // logging middleware
@@ -18,6 +18,7 @@ app.use("/api", require("./api"));
 app.get("/", (req, res) =>
   res.sendFile(path.join(__dirname, "..", "public/index.html"))
 );
+
 // static file-serving middleware
 app.use(express.static(path.join(__dirname, "..", "public")));
 
@@ -26,7 +27,6 @@ app.use((req, res, next) => {
   if (path.extname(req.path).length) {
     const err = new Error("Not found");
     err.status = 404;
-
     next(err);
   } else {
     next();

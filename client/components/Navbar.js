@@ -3,6 +3,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { logout } from "../store";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faHome,
+  faSignOutAlt,
+  faSignInAlt,
+  faUserPlus,
+} from "@fortawesome/free-solid-svg-icons";
+import "./css/navbar.css";
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -14,28 +22,39 @@ const Navbar = () => {
   };
 
   return (
-    <div>
-      <h1>Sticker Farm</h1>
-      <nav>
+    <nav className="navbar">
+      <div className="navbar-menu">
+        <div className="navbar-start">
+          <Link to="/home" className="navbar-item">
+            <FontAwesomeIcon icon={faHome} className="navbar-icon" />
+            <div className="navbar-brand">
+              <h1 className="navbar-title">Sticker Farm</h1>
+            </div>
+          </Link>
+        </div>
+
         {isLoggedIn ? (
-          <div>
-            {/* The navbar will show these links after you log in */}
-            <Link to="/home">Home</Link>
-            <a href="#" onClick={handleLogout}>
+          <div className="navbar-end">
+            <p className="navbar-item">Hi, {auth.email.split("@")[0]}</p>
+            <a href="#" className="navbar-item" onClick={handleLogout}>
+              <FontAwesomeIcon icon={faSignOutAlt} className="navbar-icon" />
               Logout
             </a>
-            <p>Hi, {auth.email.split("@")[0]}</p>
           </div>
         ) : (
-          <div>
-            {/* The navbar will show these links before you log in */}
-            <Link to="/login">Login</Link>
-            <Link to="/signup">Sign Up</Link>
+          <div className="navbar-end">
+            <Link to="/login" className="navbar-item">
+              <FontAwesomeIcon icon={faSignInAlt} className="navbar-icon" />
+              Login
+            </Link>
+            <Link to="/signup" className="navbar-item">
+              <FontAwesomeIcon icon={faUserPlus} className="navbar-icon" />
+              Sign Up
+            </Link>
           </div>
         )}
-      </nav>
-      <hr />
-    </div>
+      </div>
+    </nav>
   );
 };
 

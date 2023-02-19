@@ -1,27 +1,12 @@
 const router = require("express").Router();
 const {
-  models: { Products, User },
+  models: { Product },
 } = require("../db");
 
-module.exports = router;
-
-const requireToken = async (req, res, next) => {
+// matches GET requests to /api/products
+router.get("/", async (req, res, next) => {
   try {
-    const token = req.headers.authorization;
-    console.log("token", token);
-    const user = await User.findByToken(token);
-    req.user = user;
-    next();
-  } catch (error) {
-    next(error);
-  }
-};
-
-// matches GET requests to /api/puppies/
-router.get("/products", async (req, res, next) => {
-  console.log("PRODUCTS..............");
-  try {
-    const products = await Products.findAll();
+    const products = await Product.findAll();
     res.json(products);
   } catch (error) {
     next(error);
@@ -34,3 +19,5 @@ router.get("/products", async (req, res, next) => {
 // router.put('/:puppyId', function (req, res, next) { /* etc */});
 // matches DELETE requests to /api/puppies/:puppyId
 // router.delete('/:puppyId', function (req, res, next) { /* etc */});
+
+module.exports = router;
