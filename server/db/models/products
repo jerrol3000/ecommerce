@@ -6,6 +6,10 @@ const Producrts = db.define("products", {
     type: Sequelize.STRING,
     allowNull: false,
   },
+  image: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
   price: {
     type: Sequelize.DECIMAL(5, 2),
     allowNull: false,
