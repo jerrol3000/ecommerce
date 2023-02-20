@@ -6,8 +6,8 @@ import "./css/product.css";
 
 function Home() {
   const dispatch = useDispatch();
-  const products = useSelector((state) => state.products);
-  console.log(products);
+  const { products } = useSelector((state) => state.products);
+  console.log("products", products);
   useEffect(() => {
     dispatch(fetchProducts());
   }, []);
@@ -21,6 +21,7 @@ function Home() {
             description={product.description}
             image={product.image}
             price={product.price}
+            id={product.id}
           />
         );
       })}

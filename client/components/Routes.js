@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { Routes as AppRoutes, Route, Navigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { me } from "../store/authSlice";
+import SingleProduct from "./SingleProduct";
 import { Login, Signup } from "./AuthForm";
 import Home from "./Home";
 
@@ -20,6 +21,7 @@ const Routes = () => {
         {isLoggedIn ? (
           <>
             <Route path="/home" element={<Home />} />
+            <Route path="/products/:productId" element={<SingleProduct />} />
             <Route path="*" element={<Navigate to="/home" replace />} />
           </>
         ) : (

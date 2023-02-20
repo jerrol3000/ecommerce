@@ -13,6 +13,17 @@ router.get("/", async (req, res, next) => {
   }
 });
 
+router.get("/:productId", async (req, res, next) => {
+  try {
+    const product = await Product.findOne({
+      where: { id: req.params.productId },
+    });
+    res.json(product);
+  } catch (error) {
+    next(error);
+  }
+});
+
 // matches POST requests to /api/puppies/
 // router.post('/', function (req, res, next) { /* etc */});
 // matches PUT requests to /api/puppies/:puppyId

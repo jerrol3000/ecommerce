@@ -6,6 +6,7 @@ export const fetchProducts = createAsyncThunk(
   async () => {
     try {
       const { data } = await axios.get(`/api/products`);
+      console.log("data", data);
       return data;
     } catch (error) {
       console.log(error);
@@ -13,14 +14,31 @@ export const fetchProducts = createAsyncThunk(
   }
 );
 
-const initialState = [];
+export const fetchById = createAsyncThunk("products/fetchById", async (id) => {
+  try {
+    const { data } = await axios.get(`/api/products/${id}`);
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+const initialState = {
+  products: [],
+  product: {},
+};
 
 const productSlice = createSlice({
   name: "products",
   initialState,
   reducers: {},
   extraReducers: {
-    [fetchProducts.fulfilled]: (state, action) => action.payload,
+    [fetchProducts.fulfilled]: (state, action) => {
+      state.products = action.payload;
+    },
+    [fetchById.fulfilled]: (state, action) => {
+      state.product = action.payload;
+    },
   },
 });
 
