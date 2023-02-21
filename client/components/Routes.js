@@ -18,14 +18,17 @@ const Routes = () => {
   return (
     <AppRoutes>
       <>
-        {isLoggedIn ? (
+        {auth.userType === "admin" ? (
           <>
-            <Route path="/home" element={<Home />} />
-            <Route path="/products/:productId" element={<SingleProduct />} />
-            <Route path="*" element={<Navigate to="/home" replace />} />
+            {/* show admin page
+          show customer information
+          show previously purchased */}
           </>
         ) : (
           <>
+            <Route path="*" element={<Navigate to="/home" replace />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/products/:productId" element={<SingleProduct />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/" element={<Login />} />

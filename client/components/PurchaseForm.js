@@ -44,19 +44,19 @@ const PurchaseForm = () => {
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
   };
-
+  const orderDetail = {
+    image: file,
+    price: price,
+    size: size,
+    quantity: quantity,
+    userId: user.id,
+    productId: id,
+  };
   const handleSubmit = (event) => {
     event.preventDefault();
-    dispatch(
-      createOrder({
-        image: file,
-        price: price,
-        size: size,
-        quantity: quantity,
-        userId: user.id,
-        productId: id,
-      })
-    );
+    !user
+      ? dispatch(createOrder(orderDetail))
+      : localStorage.setItem("order", JSON.stringify(orderDetail));
   };
   return (
     <div className="form-container">
