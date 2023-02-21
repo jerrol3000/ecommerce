@@ -1,5 +1,7 @@
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import "./css/purchaseForm.css";
+import { createOrder } from "../store/orderSlice";
 
 const PurchaseForm = () => {
   const [size, setSize] = useState(null);
@@ -9,6 +11,11 @@ const PurchaseForm = () => {
   const [file, setFile] = useState(null);
   const [showCustomInputSize, setShowCustomInputSize] = useState(false);
   const [customInputQuantity, setCustomInputQuantity] = useState(false);
+
+  const dispatch = useDispatch();
+
+  const user = useSelector((state) => state.auth);
+  const { id, price } = useSelector((state) => state.products.product);
 
   const handleSizeChange = (event) => {
     let input = event.target.value;
@@ -40,10 +47,17 @@ const PurchaseForm = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
-    // Handle form submission here
+    dispatch(
+      createOrder({
+        image: file,
+        price: price,
+        size: size,
+        quantity: quantity,
+        userId: user.id,
+        productId: id,
+      })
+    );
   };
-  console.log(customInputQuantity);
   return (
     <div className="form-container">
       <form onSubmit={handleSubmit}>
@@ -52,13 +66,14 @@ const PurchaseForm = () => {
           <input type="file" name="file" onChange={handleFileChange} />
         </div>
         {file && (
-          <div>
-            <h3>Preview:</h3>
+          <div className="preview-image">
             <img
               src={URL.createObjectURL(file)}
               alt="preview"
               style={{ maxWidth: "60%" }}
             />
+            <p>Size: {size}</p>
+            <p>Quantity: {quantity}</p>
           </div>
         )}
         <h2>Select Size</h2>
@@ -110,10 +125,10 @@ const PurchaseForm = () => {
             checked={size === "custom"}
             onChange={handleSizeChange}
           />
-          <label>Custom:</label>
+          <label>Custom</label>
           {showCustomInputSize && (
             <input
-              placeholder="Enter size"
+              placeholder="length x width "
               type="text"
               name="custom-size"
               value={customSize}
@@ -143,7 +158,7 @@ const PurchaseForm = () => {
           checked={quantity === "custom"}
           onChange={handleQuantityChange}
         />
-        <label>Custom:</label>
+        <label>Custom</label>
         {customInputQuantity && (
           <input
             placeholder="Enter quantity"

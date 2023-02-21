@@ -3,6 +3,7 @@ module.exports = router;
 
 //mount all api routes here
 router.use("/users", require("./users"));
+router.use("/order", require("./order"));
 router.use("/products", require("./product"));
 
 router.use((req, res, next) => {

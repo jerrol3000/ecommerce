@@ -59,6 +59,21 @@
 .submit-button:hover {
   background-color: #006400;
 }
+.preview-image {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
+  margin-top: 2em;
+}
+.preview-image img {
+  display: block;
+  margin: 0 auto;
+}
+.preview-image p {
+  display: inline-block;
+  vertical-align: top;
+  margin: 5px;
+}
 
 @media only screen and (max-width: 600px) {
   .form-container {
