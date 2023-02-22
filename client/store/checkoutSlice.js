@@ -5,13 +5,22 @@ export const createOrder = createAsyncThunk(
   "order/createOrder",
   async (newOrder) => {
     try {
-      const { data } = await axios.post(`/api/order`, newOrder);
+      const { data } = await axios.post(`/api/checkout`, newOrder);
       return data;
     } catch (error) {
       console.log(error);
     }
   }
 );
+
+export const fetchCart = createAsyncThunk("products/fetchCart", async (id) => {
+  try {
+    const { data } = await axios.get(`/api/checkout/${id}`);
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+});
 
 const initialState = [];
 
@@ -21,6 +30,7 @@ const orderSlice = createSlice({
   reducers: {},
   extraReducers: {
     [createOrder.fulfilled]: (state, action) => action.payload,
+    [fetchCart.fulfilled]: (state, action) => action.payload,
   },
 });
 

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./css/purchaseForm.css";
-import { createOrder } from "../store/orderSlice";
+import { createOrder } from "../store/checkoutSlice";
 
 const PurchaseForm = () => {
   const [size, setSize] = useState(null);
@@ -46,18 +46,37 @@ const PurchaseForm = () => {
   };
   const orderDetail = {
     image: file,
-    price: price,
+    price: quantity * price,
     size: size,
     quantity: quantity,
     userId: user.id,
     productId: id,
   };
+  //conditionally handle checkout if it his a logged in user or a guest user
   const handleSubmit = (event) => {
     event.preventDefault();
-    !user
-      ? dispatch(createOrder(orderDetail))
-      : localStorage.setItem("order", JSON.stringify(orderDetail));
+    if (user.id) {
+      dispatch(createOrder(orderDetail));
+    } else {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        reader.onload = (() => {
+          localStorage.setItem(
+            "order",
+            JSON.stringify({
+              image: reader.result,
+              price: quantity * price,
+              size: size,
+              quantity: quantity,
+              productId: id,
+            })
+          );
+        })();
+      };
+    }
   };
+
   return (
     <div className="form-container">
       <form onSubmit={handleSubmit}>
@@ -74,6 +93,7 @@ const PurchaseForm = () => {
             />
             <p>Size: {size}</p>
             <p>Quantity: {quantity}</p>
+            <p>Your total is: {quantity * price}</p>
           </div>
         )}
         <h2>Select Size</h2>
@@ -170,7 +190,7 @@ const PurchaseForm = () => {
         )}
         <div>
           <button className="submit-button" type="submit">
-            Submit
+            Continue
           </button>
         </div>
       </form>

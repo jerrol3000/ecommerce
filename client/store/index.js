@@ -3,10 +3,10 @@ import { configureStore } from "@reduxjs/toolkit";
 
 import auth from "./authSlice";
 import products from "./ProductSlice";
-import order from "./orderSlice";
+import checkout from "./checkoutSlice";
 
 const store = configureStore({
-  reducer: { auth, products, order },
+  reducer: { auth, products, checkout },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(createLogger({ collapsed: true })),
 });

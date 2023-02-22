@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 const db = require("../db");
 
-module.exports = db.define("order", {
+module.exports = db.define("cart", {
   image: {
     type: Sequelize.BLOB,
   },
