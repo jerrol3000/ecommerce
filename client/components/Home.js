@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../store/ProductSlice";
 import Product from "./Product";
+import RatingModal from "./RatingModal";
 import "./css/product.css";
 
 function Home() {
@@ -13,16 +14,19 @@ function Home() {
   }, []);
   return (
     <div className="product-container">
-      {products.map((product) => {
+      {products.map((product, i) => {
         return (
-          <Product
-            key={product.id}
-            name={product.name}
-            description={product.description}
-            image={product.image}
-            price={product.price}
-            id={product.id}
-          />
+          <div>
+            <RatingModal key={i + 2} />
+            <Product
+              key={product.id}
+              name={product.name}
+              description={product.description}
+              image={product.image}
+              price={product.price}
+              id={product.id}
+            />
+          </div>
         );
       })}
     </div>
