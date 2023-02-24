@@ -17,7 +17,7 @@ function Home() {
       {products.map((product, i) => {
         return (
           <div>
-            <RatingModal key={i + 2} />
+            <RatingModal key={i + 2} productId={product.id} />
             <Product
               key={product.id}
               name={product.name}

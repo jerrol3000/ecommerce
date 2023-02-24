@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchReviews } from "../store/reviewSlice";
 import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import Rating from "./Rating";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { createTheme } from "@material-ui/core/styles";
+import { Link } from "react-router-dom";
 
 const theme = createTheme();
 
@@ -37,14 +40,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ModalWithRating = () => {
+const ModalWithRating = ({ productId }) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [comment, setComment] = useState("");
   const [title, setTitle] = useState("");
 
+  const dispatch = useDispatch();
+  const reviews = useSelector((state) => state.review);
+
   const handleOpen = () => {
     setOpen(true);
+    dispatch(fetchReviews(productId));
   };
 
   const handleClose = () => {
@@ -72,8 +79,9 @@ const ModalWithRating = () => {
         onClick={handleOpen}
         className={classes.borderlessButton}
       >
-        Open Modal
+        rating
       </button>
+
       <ThemeProvider theme={theme}>
         <Modal
           open={open}
@@ -110,6 +118,24 @@ const ModalWithRating = () => {
             >
               Submit
             </Button>
+            <div>
+              {reviews.length ? (
+                reviews.map(({ title, body, rating, id }) => {
+                  return (
+                    <div key={id}>
+                      <h2>{rating}</h2>
+                      <h3>{title}</h3>
+                      <p>{body}</p>
+                    </div>
+                  );
+                })
+              ) : (
+                <p>
+                  This Product has not been reviewed yet, be the first to review
+                  it
+                </p>
+              )}
+            </div>
           </div>
         </Modal>
       </ThemeProvider>

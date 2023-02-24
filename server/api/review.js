@@ -16,7 +16,7 @@ const requireToken = async (req, res, next) => {
 };
 
 // get all review for a product
-router.get("/:productId", requireToken, async (req, res, next) => {
+router.get("/:productId", async (req, res, next) => {
   try {
     const { productId } = req.params;
     const reviews = await Review.findAll({

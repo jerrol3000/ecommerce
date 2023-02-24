@@ -6,6 +6,8 @@ import SingleProduct from "./SingleProduct";
 import { Login, Signup } from "./AuthForm";
 import Home from "./Home";
 import Checkout from "./Checkout";
+import Rating from "./Rating";
+import Reviews from "./Reviews";
 
 const Routes = () => {
   const dispatch = useDispatch();
@@ -27,10 +29,11 @@ const Routes = () => {
           </>
         ) : (
           <>
-            <Route path="*" element={<Navigate to="/home" replace />} />
-            <Route path="/home" element={<Home />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+            <Route path="/" element={<Home />} />
             <Route path="/products/:productId" element={<SingleProduct />} />
             <Route path="/checkout/:userId" element={<Checkout />} />
+            <Route path="/review/:productId" element={<Reviews />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/" element={<Login />} />
