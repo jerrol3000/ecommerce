@@ -38,6 +38,40 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "transparent",
     cursor: "pointer",
   },
+  reviewContainer: {
+    marginTop: theme.spacing(2),
+  },
+  reviewHeader: {
+    display: "flex",
+    alignItems: "center",
+    marginBottom: theme.spacing(1),
+  },
+  reviewRating: {
+    marginRight: theme.spacing(1),
+  },
+  commentsBox: {
+    width: "100%",
+    overflow: "auto",
+    border: "1px solid #ccc",
+    padding: "10px",
+    boxsizing: "borderbox",
+    height: "200px",
+  },
+  comment: {
+    borderBottom: `1px solid ${theme.palette.grey[300]}`,
+    paddingBottom: theme.spacing(2),
+    marginBottom: theme.spacing(2),
+  },
+  noComments: {
+    fontStyle: "italic",
+    color: theme.palette.text.secondary,
+    marginTop: theme.spacing(1),
+  },
+  commentsBox: {
+    maxHeight: "200px",
+    overflow: "auto",
+    marginTop: theme.spacing(2),
+  },
 }));
 
 const ModalWithRating = ({ productId }) => {
@@ -71,7 +105,6 @@ const ModalWithRating = ({ productId }) => {
     //submit to the database
     handleClose();
   };
-
   return (
     <div>
       <button
@@ -118,22 +151,19 @@ const ModalWithRating = ({ productId }) => {
             >
               Submit
             </Button>
-            <div>
+            <div className={classes.commentsBox}>
               {reviews.length ? (
                 reviews.map(({ title, body, rating, id }) => {
                   return (
                     <div key={id}>
                       <h2>{rating}</h2>
                       <h3>{title}</h3>
-                      <p>{body}</p>
+                      <p className={classes.comment}>{body}</p>
                     </div>
                   );
                 })
               ) : (
-                <p>
-                  This Product has not been reviewed yet, be the first to review
-                  it
-                </p>
+                <p className={classes.noComments}>No comments yet.</p>
               )}
             </div>
           </div>
@@ -142,5 +172,4 @@ const ModalWithRating = ({ productId }) => {
     </div>
   );
 };
-
 export default ModalWithRating;
