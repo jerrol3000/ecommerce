@@ -6,6 +6,8 @@ const User = require("./models/User");
 const Product = require("./models/Product");
 const Cart = require("./models/Cart");
 const CartItem = require("./models/CartItem");
+const Review = require("./models/Review");
+const Comment = require("./models/Comment");
 
 //associations go here!
 User.hasMany(Cart);
@@ -19,6 +21,17 @@ Product.belongsToMany(Cart, {
   through: CartItem,
 });
 
+Product.hasMany(Review);
+Review.belongsTo(Product);
+
+User.hasMany(Review);
+Review.belongsTo(User);
+Review.hasMany(Comment);
+Comment.belongsTo(Review);
+
+User.hasMany(Comment);
+Comment.belongsTo(User);
+
 module.exports = {
   db,
   models: {
@@ -26,5 +39,7 @@ module.exports = {
     Product,
     Cart,
     CartItem,
+    Review,
+    Comment,
   },
 };

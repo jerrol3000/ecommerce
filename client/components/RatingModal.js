@@ -5,8 +5,6 @@ import Rating from "./Rating";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { createTheme } from "@material-ui/core/styles";
-import { faStar as farStar } from "@fortawesome/free-regular-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const theme = createTheme();
 
@@ -32,12 +30,18 @@ const useStyles = makeStyles((theme) => ({
   submitButton: {
     float: "right",
   },
+  borderlessButton: {
+    border: "none",
+    backgroundColor: "transparent",
+    cursor: "pointer",
+  },
 }));
 
-const RatingModal = () => {
+const ModalWithRating = () => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [comment, setComment] = useState("");
+  const [title, setTitle] = useState("");
 
   const handleOpen = () => {
     setOpen(true);
@@ -51,8 +55,13 @@ const RatingModal = () => {
     setComment(event.target.value);
   };
 
+  const handleTitleChange = (event) => {
+    setTitle(event.target.value);
+  };
+
   const handleSubmit = () => {
-    //post to a rating database
+    console.log(`Title: ${title} Comment: ${comment}`);
+    //submit to the database
     handleClose();
   };
 
@@ -61,9 +70,9 @@ const RatingModal = () => {
       <button
         type="button"
         onClick={handleOpen}
-        style={{ border: "none", backgroundColor: "transparent" }}
+        className={classes.borderlessButton}
       >
-        <FontAwesomeIcon icon={farStar} />
+        Open Modal
       </button>
       <ThemeProvider theme={theme}>
         <Modal
@@ -75,6 +84,14 @@ const RatingModal = () => {
           <div className={classes.paper}>
             <h2 id="simple-modal-title">Rate this product</h2>
             <Rating />
+            <TextField
+              id="outlined-basic"
+              label="Enter title"
+              variant="outlined"
+              className={classes.textField}
+              value={title}
+              onChange={handleTitleChange}
+            />
             <TextField
               id="outlined-multiline-flexible"
               label="Enter your comment"
@@ -100,4 +117,4 @@ const RatingModal = () => {
   );
 };
 
-export default RatingModal;
+export default ModalWithRating;
