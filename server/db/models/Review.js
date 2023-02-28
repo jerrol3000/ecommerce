@@ -1,21 +1,29 @@
 const Sequelize = require("sequelize");
 const db = require("../db");
 
-module.exports = db.define("review", {
+const Review = db.define("review", {
   title: {
     type: Sequelize.STRING,
-    allowNull: false,
+    // allowNull: false,
   },
   body: {
-    type: Sequelize.STRING,
-    allowNull: false,
+    type: Sequelize.TEXT,
+    // allowNull: false,
   },
   rating: {
     type: Sequelize.INTEGER,
-    allowNull: false,
+    // allowNull: false,
     validate: {
       min: 1,
       max: 5,
     },
   },
+  productId: {
+    type: Sequelize.INTEGER,
+  },
+  userId: {
+    type: Sequelize.INTEGER,
+  },
 });
+
+module.exports = Review;

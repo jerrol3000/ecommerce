@@ -1,13 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchReviews } from "../store/reviewSlice";
 import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import Rating from "./Rating";
+import { postReview } from "../store/reviewSlice";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { createTheme } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar, faStarHalf } from "@fortawesome/free-solid-svg-icons";
+import { faStar as farStar } from "@fortawesome/free-regular-svg-icons";
+import { resetRating } from "../store/ratingSlice";
 
 const theme = createTheme();
 
@@ -54,8 +59,8 @@ const useStyles = makeStyles((theme) => ({
     overflow: "auto",
     border: "1px solid #ccc",
     padding: "10px",
-    boxsizing: "borderbox",
     height: "200px",
+    marginTop: theme.spacing(6),
   },
   comment: {
     borderBottom: `1px solid ${theme.palette.grey[300]}`,
@@ -67,21 +72,17 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.secondary,
     marginTop: theme.spacing(1),
   },
-  commentsBox: {
-    maxHeight: "200px",
-    overflow: "auto",
-    marginTop: theme.spacing(2),
-  },
 }));
 
-const ModalWithRating = ({ productId }) => {
+const ModalWithRating = ({ productId, averageRating }) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-  const [comment, setComment] = useState("");
+  const [body, setBody] = useState("");
   const [title, setTitle] = useState("");
 
   const dispatch = useDispatch();
   const reviews = useSelector((state) => state.review);
+  const rating = useSelector((state) => state.rating);
 
   const handleOpen = () => {
     setOpen(true);
@@ -90,10 +91,13 @@ const ModalWithRating = ({ productId }) => {
 
   const handleClose = () => {
     setOpen(false);
+    dispatch(resetRating());
+    setBody("");
+    setTitle("");
   };
 
   const handleCommentChange = (event) => {
-    setComment(event.target.value);
+    setBody(event.target.value);
   };
 
   const handleTitleChange = (event) => {
@@ -101,10 +105,10 @@ const ModalWithRating = ({ productId }) => {
   };
 
   const handleSubmit = () => {
-    console.log(`Title: ${title} Comment: ${comment}`);
-    //submit to the database
+    dispatch(postReview({ productId, review: { title, body, rating } }));
     handleClose();
   };
+
   return (
     <div>
       <button
@@ -112,7 +116,7 @@ const ModalWithRating = ({ productId }) => {
         onClick={handleOpen}
         className={classes.borderlessButton}
       >
-        rating
+        stars
       </button>
 
       <ThemeProvider theme={theme}>
@@ -140,7 +144,7 @@ const ModalWithRating = ({ productId }) => {
               minRows={4}
               variant="outlined"
               className={classes.textField}
-              value={comment}
+              value={body}
               onChange={handleCommentChange}
             />
             <Button
@@ -156,14 +160,28 @@ const ModalWithRating = ({ productId }) => {
                 reviews.map(({ title, body, rating, id }) => {
                   return (
                     <div key={id}>
-                      <h2>{rating}</h2>
-                      <h3>{title}</h3>
+                      <span>
+                        {Array(rating)
+                          .fill(<FontAwesomeIcon icon={faStar} />)
+                          .concat(
+                            Array(5 - rating).fill(
+                              <FontAwesomeIcon icon={farStar} />
+                            )
+                          )
+                          .map((star, index) => (
+                            <span key={index}>{star}</span>
+                          ))}
+                      </span>
+                      <h3 className={classes.reviewHeader}>{title}</h3>
                       <p className={classes.comment}>{body}</p>
                     </div>
                   );
                 })
               ) : (
-                <p className={classes.noComments}>No comments yet.</p>
+                <p className={classes.noComments}>
+                  This Product has not been reviewed yet, be the first to review
+                  it
+                </p>
               )}
             </div>
           </div>

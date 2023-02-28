@@ -1,27 +1,27 @@
-import React, { useState } from "react";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar, faStarHalf } from "@fortawesome/free-solid-svg-icons";
 import { faStar as farStar } from "@fortawesome/free-regular-svg-icons";
+import { setRating } from "../store/ratingSlice";
 
 const Rating = () => {
-  const [rating, setRating] = useState(0);
+  const rating = useSelector((state) => state.rating);
+  const dispatch = useDispatch();
 
   const handleRating = (value) => {
-    setRating(value);
+    dispatch(setRating(value));
   };
 
   return (
     <div>
       {[...Array(5)].map((_, index) => {
         const value = index + 1;
-        const isHalf = value - 0.5 === rating && !Number.isInteger(rating);
 
         return (
           <span key={index} onClick={() => handleRating(value)}>
             {value <= rating ? (
               <FontAwesomeIcon icon={faStar} />
-            ) : isHalf ? (
-              <FontAwesomeIcon icon={faStarHalf} />
             ) : (
               <FontAwesomeIcon icon={farStar} />
             )}
