@@ -36,7 +36,6 @@ export const postReview = createAsyncThunk(
         review,
         sendToken()
       );
-      console.log("data", data);
       return data;
     } catch (error) {
       console.log(error);
@@ -45,16 +44,26 @@ export const postReview = createAsyncThunk(
   }
 );
 
-const initialState = [];
+const initialState = {
+  reviewsById: [],
+  allReviews: [],
+  postReview: [],
+};
 
 const reviewtSlice = createSlice({
   name: "products",
   initialState,
   reducers: {},
   extraReducers: {
-    [fetchReviews.fulfilled]: (state, action) => action.payload,
-    [fetchAllReviews.fulfilled]: (state, action) => action.payload,
-    [postReview.fulfilled]: (state, action) => action.payload,
+    [fetchReviews.fulfilled]: (state, action) => {
+      state.reviewsById = action.payload;
+    },
+    [fetchAllReviews.fulfilled]: (state, action) => {
+      state.allReviews = action.payload;
+    },
+    [postReview.fulfilled]: (state, action) => {
+      state.postReview = action.payload;
+    },
   },
 });
 

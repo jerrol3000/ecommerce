@@ -12,10 +12,8 @@ const AuthForm = ({ formName, displayName, error }) => {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
 
-  console.log(!!auth.id);
   useEffect(() => {
     !!auth.id && navigate("/home");
-    !!auth.id && console.log("login happened");
   }, [auth, navigate]);
 
   const handleSubmit = (evt) => {

@@ -9,26 +9,27 @@ import "./css/product.css";
 function Home() {
   const dispatch = useDispatch();
   const { products } = useSelector((state) => state.products);
-  const review = useSelector((state) => state.review);
-
-  console.log("state", review);
+  const { allReviews } = useSelector((state) => state.review);
 
   useEffect(() => {
     dispatch(fetchProducts());
     dispatch(fetchAllReviews());
   }, []);
+
   const averageRating = (id) => {
-    const array = review.filter((review) => review.productId === id);
+    const array = allReviews.filter((review) => review.productId === id);
     return array.length
-      ? array.reduce((pre, cur) => pre + cur.productId, 0) / array.length
+      ? Math.floor(
+          array.reduce((pre, cur) => pre + cur.productId, 0) / array.length
+        )
       : 0;
   };
 
   return (
     <div className="product-container">
-      {products.map((product, i) => {
+      {products.map((product) => {
         return (
-          <div key={i + 2}>
+          <div key={product.id}>
             <RatingModal
               productId={product.id}
               averageRating={averageRating(product.id)}

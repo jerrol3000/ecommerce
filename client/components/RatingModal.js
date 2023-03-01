@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchReviews } from "../store/reviewSlice";
+import { fetchReviews, postReview } from "../store/reviewSlice";
 import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import Rating from "./Rating";
-import { postReview } from "../store/reviewSlice";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { createTheme } from "@material-ui/core/styles";
@@ -81,7 +80,7 @@ const ModalWithRating = ({ productId, averageRating }) => {
   const [title, setTitle] = useState("");
 
   const dispatch = useDispatch();
-  const reviews = useSelector((state) => state.review);
+  const { reviewsById } = useSelector((state) => state.review);
   const rating = useSelector((state) => state.rating);
 
   const handleOpen = () => {
@@ -108,7 +107,6 @@ const ModalWithRating = ({ productId, averageRating }) => {
     dispatch(postReview({ productId, review: { title, body, rating } }));
     handleClose();
   };
-
   return (
     <div>
       <button
@@ -171,8 +169,8 @@ const ModalWithRating = ({ productId, averageRating }) => {
               Submit
             </Button>
             <div className={classes.commentsBox}>
-              {reviews.length ? (
-                reviews.map(({ title, body, rating, id }) => {
+              {reviewsById.length ? (
+                reviewsById.map(({ title, body, rating, id }) => {
                   return (
                     <div key={id}>
                       <span>

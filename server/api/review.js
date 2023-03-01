@@ -58,4 +58,19 @@ router.post("/:productId", requireToken, async (req, res, next) => {
   }
 });
 
+//PUT route
+// router.put("/:productId", requireToken, async (req, res, next) => {
+//   const { productId } = req.params;
+//   const { title, body, rating } = req.body;
+//   try {
+//     const review = await Review.update(
+//       { title, body, rating },
+//       { where: { productId } }
+//     );
+//     res.json(review);
+//   } catch (error) {
+//     next(error);
+//   }
+// });
+
 module.exports = router;

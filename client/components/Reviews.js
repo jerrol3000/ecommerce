@@ -11,7 +11,6 @@ function Reviews() {
   useEffect(() => {
     dispatch(fetchReviews(params.productId));
   }, []);
-  console.log("reviews", reviews);
   return (
     <div>
       {reviews.length ? (
