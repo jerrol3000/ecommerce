@@ -15,6 +15,16 @@ const requireToken = async (req, res, next) => {
   }
 };
 
+// get all reviews
+router.get("/", async (req, res, next) => {
+  try {
+    const reviews = await Review.findAll();
+    res.status(201).json(reviews);
+  } catch (error) {
+    next(error);
+  }
+});
+
 // get all review for a product
 router.get("/:productId", async (req, res, next) => {
   try {

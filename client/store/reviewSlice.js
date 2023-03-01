@@ -14,6 +14,19 @@ export const fetchReviews = createAsyncThunk(
   }
 );
 
+//get all review
+export const fetchAllReviews = createAsyncThunk(
+  "products/fetchAllReviews",
+  async () => {
+    try {
+      const { data } = await axios.get(`/api/review`);
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
 export const postReview = createAsyncThunk(
   "products/postReview",
   async ({ productId, review }, thunkAPI) => {
@@ -40,6 +53,7 @@ const reviewtSlice = createSlice({
   reducers: {},
   extraReducers: {
     [fetchReviews.fulfilled]: (state, action) => action.payload,
+    [fetchAllReviews.fulfilled]: (state, action) => action.payload,
     [postReview.fulfilled]: (state, action) => action.payload,
   },
 });

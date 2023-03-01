@@ -116,7 +116,22 @@ const ModalWithRating = ({ productId, averageRating }) => {
         onClick={handleOpen}
         className={classes.borderlessButton}
       >
-        stars
+        {averageRating ? (
+          <span>
+            {Array(averageRating)
+              .fill(<FontAwesomeIcon icon={faStar} />)
+              .concat(
+                Array(5 - averageRating).fill(
+                  <FontAwesomeIcon icon={farStar} />
+                )
+              )
+              .map((star, index) => (
+                <span key={index}>{star}</span>
+              ))}
+          </span>
+        ) : (
+          Array(5).fill(<FontAwesomeIcon icon={farStar} />)
+        )}
       </button>
 
       <ThemeProvider theme={theme}>
