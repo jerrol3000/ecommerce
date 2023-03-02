@@ -35,7 +35,6 @@ function Home() {
               averageRating={averageRating(product.id)}
             />
             <Product
-              key={product.id}
               name={product.name}
               description={product.description}
               image={product.image}

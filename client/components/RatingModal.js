@@ -18,8 +18,8 @@ const theme = createTheme();
 const useStyles = makeStyles((theme) => ({
   paper: {
     position: "absolute",
-    width: 400,
-    top: "50%",
+    width: 370,
+    top: "51%",
     left: "50%",
     transform: "translate(-50%, -50%)",
     backgroundColor: theme.palette.background.paper,
