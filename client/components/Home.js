@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../store/ProductSlice";
 import { fetchAllReviews } from "../store/reviewSlice";
@@ -14,7 +14,7 @@ function Home() {
   useEffect(() => {
     dispatch(fetchProducts());
     dispatch(fetchAllReviews());
-  }, []);
+  }, [dispatch]);
 
   const averageRating = (id) => {
     const array = allReviews.filter((review) => review.productId === id);
@@ -24,7 +24,7 @@ function Home() {
         )
       : 0;
   };
-  console.log(averageRating(1));
+
   return (
     <div className="product-container">
       {products.map((product) => {

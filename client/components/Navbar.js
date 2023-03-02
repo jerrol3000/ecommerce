@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { logout } from "../store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,52 +8,125 @@ import {
   faSignOutAlt,
   faSignInAlt,
   faUserPlus,
+  faShoppingCart,
 } from "@fortawesome/free-solid-svg-icons";
-import "./css/navbar.css";
+import {
+  AppBar,
+  Toolbar,
+  IconButton,
+  Button,
+  Typography,
+  Menu,
+  MenuItem,
+  Badge,
+} from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+  },
+  title: {
+    flexGrow: 1,
+    textAlign: "center",
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
+  },
+  logo: {
+    height: 40,
+  },
+  cartIcon: {
+    marginRight: theme.spacing(1),
+  },
+}));
 
 const Navbar = () => {
+  const classes = useStyles();
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
   const isLoggedIn = !!auth.id;
+  const [anchorEl, setAnchorEl] = useState(null);
 
   const handleLogout = () => {
     dispatch(logout());
   };
 
-  return (
-    <nav className="navbar">
-      <div className="navbar-menu">
-        <div className="navbar-start">
-          <Link to="/home" className="navbar-item">
-            <FontAwesomeIcon icon={faHome} className="navbar-icon" />
-            <div className="navbar-brand">
-              <h1 className="navbar-title">Sticker Farm</h1>
-            </div>
-          </Link>
-        </div>
+  const handleMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
 
-        {isLoggedIn ? (
-          <div className="navbar-end">
-            <p className="navbar-item">Hi, {auth.email.split("@")[0]}</p>
-            <a href="#" className="navbar-item" onClick={handleLogout}>
-              <FontAwesomeIcon icon={faSignOutAlt} className="navbar-icon" />
-              Logout
-            </a>
-          </div>
-        ) : (
-          <div className="navbar-end">
-            <Link to="/login" className="navbar-item">
-              <FontAwesomeIcon icon={faSignInAlt} className="navbar-icon" />
-              Login
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  return (
+    <div className={classes.root}>
+      <AppBar position="static" color="primary">
+        <Toolbar>
+          <IconButton
+            edge="start"
+            className={classes.menuButton}
+            color="inherit"
+            aria-label="menu"
+            onClick={handleMenu}
+          >
+            <FontAwesomeIcon
+              icon={faShoppingCart}
+              className={classes.cartIcon}
+            />
+            <Badge badgeContent={4} color="secondary">
+              <FontAwesomeIcon icon={faHome} />
+            </Badge>
+          </IconButton>
+          <Typography variant="h6" className={classes.title}>
+            <Link to="/home">
+              <img
+                src="/logo.png"
+                alt="Sticker Farm"
+                className={classes.logo}
+              />
             </Link>
-            <Link to="/signup" className="navbar-item">
-              <FontAwesomeIcon icon={faUserPlus} className="navbar-icon" />
-              Sign Up
-            </Link>
-          </div>
-        )}
-      </div>
-    </nav>
+          </Typography>
+          {isLoggedIn ? (
+            <div>
+              <Button color="inherit" onClick={handleLogout}>
+                <FontAwesomeIcon
+                  icon={faSignOutAlt}
+                  className={classes.menuIcon}
+                />
+                Logout
+              </Button>
+            </div>
+          ) : (
+            <div>
+              <Button color="inherit" component={Link} to="/login">
+                <FontAwesomeIcon
+                  icon={faSignInAlt}
+                  className={classes.menuIcon}
+                />
+                Login
+              </Button>
+              <Button color="inherit" component={Link} to="/signup">
+                <FontAwesomeIcon
+                  icon={faUserPlus}
+                  className={classes.menuIcon}
+                />
+                Sign Up
+              </Button>
+            </div>
+          )}
+        </Toolbar>
+      </AppBar>
+      <Menu
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
+        <MenuItem onClick={handleClose}>Shopping Cart</MenuItem>
+      </Menu>
+    </div>
   );
 };
 

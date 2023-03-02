@@ -2,12 +2,61 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { authenticate } from "../store/authSlice";
 import { useNavigate } from "react-router-dom";
+import {
+  createMuiTheme,
+  makeStyles,
+  ThemeProvider,
+} from "@material-ui/core/styles";
+import {
+  TextField,
+  Button,
+  Container,
+  Typography,
+  Link,
+  Grid,
+  Paper,
+} from "@material-ui/core";
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: "#1A237E",
+      contrastText: "#FFFFFF",
+    },
+    secondary: {
+      main: "#FF9800",
+      contrastText: "#FFFFFF",
+    },
+  },
+});
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    marginTop: theme.spacing(8),
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  paper: {
+    padding: theme.spacing(4),
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    backgroundColor: "#FAFAFA",
+  },
+  form: {
+    width: "100%",
+    marginTop: theme.spacing(1),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+}));
 
 const AuthForm = ({ formName, displayName, error }) => {
+  const classes = useStyles();
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
-  // const handleClose = () => setOpen(false);
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
@@ -24,50 +73,62 @@ const AuthForm = ({ formName, displayName, error }) => {
   };
 
   return (
-    <div
-      style={{
-        marginTop: "65px",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "calc(100vh - 64px)",
-        backgroundColor: "#0a98f7",
-      }}
-    >
-      <div open={open} />
-      <form
-        style={{
-          border: "4px groove grey",
-          borderRadius: "5px",
-          backgroundColor: "white",
-          padding: "20px",
-          textAlign: "left",
-        }}
-        onSubmit={handleSubmit}
-        name={formName}
-      >
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          <label htmlFor="email">
-            <small>Email</small>
-          </label>
-          <input name="email" type="text" />
+    <ThemeProvider theme={theme}>
+      <Container component="main" maxWidth="xs">
+        <div className={classes.root}>
+          <Paper elevation={2} className={classes.paper}>
+            <Typography component="h1" variant="h5">
+              {displayName}
+            </Typography>
+            <form
+              className={classes.form}
+              onSubmit={handleSubmit}
+              name={formName}
+            >
+              <TextField
+                variant="outlined"
+                margin="normal"
+                fullWidth
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                autoFocus
+              />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                fullWidth
+                label="Password"
+                name="password"
+                type="password"
+                autoComplete="current-password"
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+              >
+                {displayName}
+              </Button>
+              {error && error.response && (
+                <Typography color="error" align="center">
+                  {error.response.data}
+                </Typography>
+              )}
+            </form>
+            <Grid container justify="flex-end">
+              <Grid item>
+                <Link href="#" variant="body2" onClick={handleOpen}>
+                  Forgot Password?
+                </Link>
+              </Grid>
+            </Grid>
+          </Paper>
         </div>
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          <label htmlFor="password">
-            <small>Password</small>
-          </label>
-          <input name="password" type="password" />
-        </div>
-        <div style={{ textAlign: "center", marginTop: "15px" }}>
-          <button type="submit">{displayName}</button>
-        </div>
-        {error && error.response && <div> {error.response.data} </div>}
-      </form>
-      <div style={{ backgroundColor: "white", margin: "5px" }}>
-        <button onClick={handleOpen}>Forgot Password?</button>
-      </div>
-    </div>
+      </Container>
+    </ThemeProvider>
   );
 };
 

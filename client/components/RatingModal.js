@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchReviews, postReview, updateReview } from "../store/reviewSlice";
 import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar, faStarHalf } from "@fortawesome/free-solid-svg-icons";
 import { faStar as farStar } from "@fortawesome/free-regular-svg-icons";
-import { resetRating, setRating } from "../store/ratingSlice";
+import { resetRating } from "../store/ratingSlice";
 
 const theme = createTheme();
 
@@ -122,16 +122,6 @@ const ModalWithRating = ({ productId, averageRating }) => {
     }
   };
 
-  const handleRatingChange = (value) => {
-    if (editReview) {
-      setEditReview({
-        ...editReview,
-        rating: value,
-      });
-    } else {
-      setRating(value);
-    }
-  };
   const handleEditSubmit = () => {
     dispatch(
       updateReview({
@@ -139,13 +129,13 @@ const ModalWithRating = ({ productId, averageRating }) => {
         review: {
           title: editReview.title,
           body: editReview.body,
-          rating: editReview.rating,
+          rating,
           id: editReview.id,
         },
       })
     );
-    setOpen(false);
     setEditReview(null);
+    setOpen(false);
   };
 
   const handleSubmit = () => {
@@ -153,7 +143,6 @@ const ModalWithRating = ({ productId, averageRating }) => {
     handleClose();
   };
 
-  console.log("editReview", editReview);
   return (
     <div>
       <button
@@ -194,7 +183,7 @@ const ModalWithRating = ({ productId, averageRating }) => {
               label="Enter title"
               variant="outlined"
               className={classes.textField}
-              value={title}
+              value={editReview ? editReview.title : title}
               onChange={handleTitleChange}
             />
             <TextField
@@ -204,14 +193,14 @@ const ModalWithRating = ({ productId, averageRating }) => {
               minRows={4}
               variant="outlined"
               className={classes.textField}
-              value={body}
+              value={editReview ? editReview.body : body}
               onChange={handleCommentChange}
             />
             <Button
               variant="contained"
               color="primary"
               className={classes.submitButton}
-              onClick={handleSubmit}
+              onClick={editReview ? handleEditSubmit : handleSubmit}
             >
               Submit
             </Button>
