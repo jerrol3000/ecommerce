@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { logout } from "../store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { createTheme } from "@material-ui/core/styles";
 import {
   faHome,
   faSignOutAlt,
@@ -34,7 +35,8 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
   },
   logo: {
-    height: 40,
+    height: 50,
+    paddingTop: 8,
   },
   cartIcon: {
     marginRight: theme.spacing(1),
@@ -71,12 +73,11 @@ const Navbar = () => {
             aria-label="menu"
             onClick={handleMenu}
           >
-            <FontAwesomeIcon
-              icon={faShoppingCart}
-              className={classes.cartIcon}
-            />
-            <Badge badgeContent={4} color="secondary">
-              <FontAwesomeIcon icon={faHome} />
+            <Badge badgeContent={0} color="secondary">
+              <FontAwesomeIcon
+                icon={faShoppingCart}
+                className={classes.cartIcon}
+              />
             </Badge>
           </IconButton>
           <Typography variant="h6" className={classes.title}>
