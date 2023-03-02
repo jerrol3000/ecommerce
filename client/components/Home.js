@@ -20,11 +20,11 @@ function Home() {
     const array = allReviews.filter((review) => review.productId === id);
     return array.length
       ? Math.floor(
-          array.reduce((pre, cur) => pre + cur.productId, 0) / array.length
+          array.reduce((pre, cur) => pre + Number(cur.rating), 0) / array.length
         )
       : 0;
   };
-
+  console.log(averageRating(1));
   return (
     <div className="product-container">
       {products.map((product) => {

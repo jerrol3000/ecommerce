@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchReviews, postReview } from "../store/reviewSlice";
+import { fetchReviews, postReview, updateReview } from "../store/reviewSlice";
 import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import Rating from "./Rating";
@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar, faStarHalf } from "@fortawesome/free-solid-svg-icons";
 import { faStar as farStar } from "@fortawesome/free-regular-svg-icons";
-import { resetRating } from "../store/ratingSlice";
+import { resetRating, setRating } from "../store/ratingSlice";
 
 const theme = createTheme();
 
@@ -78,10 +78,12 @@ const ModalWithRating = ({ productId, averageRating }) => {
   const [open, setOpen] = useState(false);
   const [body, setBody] = useState("");
   const [title, setTitle] = useState("");
+  const [editReview, setEditReview] = useState(null);
 
   const dispatch = useDispatch();
   const { reviewsById } = useSelector((state) => state.review);
   const rating = useSelector((state) => state.rating);
+  const currentUser = useSelector((state) => state.auth.id);
 
   const handleOpen = () => {
     setOpen(true);
@@ -94,19 +96,64 @@ const ModalWithRating = ({ productId, averageRating }) => {
     setBody("");
     setTitle("");
   };
-
-  const handleCommentChange = (event) => {
-    setBody(event.target.value);
+  const handleEdit = (id) => {
+    const reviewToEdit = reviewsById.find((review) => review.id === id);
+    setEditReview(reviewToEdit);
+  };
+  const handleTitleChange = (event) => {
+    if (editReview) {
+      setEditReview({
+        ...editReview,
+        title: event.target.value,
+      });
+    } else {
+      setTitle(event.target.value);
+    }
   };
 
-  const handleTitleChange = (event) => {
-    setTitle(event.target.value);
+  const handleCommentChange = (event) => {
+    if (editReview) {
+      setEditReview({
+        ...editReview,
+        body: event.target.value,
+      });
+    } else {
+      setBody(event.target.value);
+    }
+  };
+
+  const handleRatingChange = (value) => {
+    if (editReview) {
+      setEditReview({
+        ...editReview,
+        rating: value,
+      });
+    } else {
+      setRating(value);
+    }
+  };
+  const handleEditSubmit = () => {
+    dispatch(
+      updateReview({
+        productId,
+        review: {
+          title: editReview.title,
+          body: editReview.body,
+          rating: editReview.rating,
+          id: editReview.id,
+        },
+      })
+    );
+    setOpen(false);
+    setEditReview(null);
   };
 
   const handleSubmit = () => {
     dispatch(postReview({ productId, review: { title, body, rating } }));
     handleClose();
   };
+
+  console.log("editReview", editReview);
   return (
     <div>
       <button
@@ -170,7 +217,7 @@ const ModalWithRating = ({ productId, averageRating }) => {
             </Button>
             <div className={classes.commentsBox}>
               {reviewsById.length ? (
-                reviewsById.map(({ title, body, rating, id }) => {
+                reviewsById.map(({ title, body, rating, id, userId }) => {
                   return (
                     <div key={id}>
                       <span>
@@ -187,6 +234,9 @@ const ModalWithRating = ({ productId, averageRating }) => {
                       </span>
                       <h3 className={classes.reviewHeader}>{title}</h3>
                       <p className={classes.comment}>{body}</p>
+                      {userId === currentUser && (
+                        <button onClick={() => handleEdit(id)}>Edit</button>
+                      )}
                     </div>
                   );
                 })

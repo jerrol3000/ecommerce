@@ -44,6 +44,23 @@ export const postReview = createAsyncThunk(
   }
 );
 
+export const updateReview = createAsyncThunk(
+  "products/updateReview",
+  async ({ productId, review }, thunkAPI) => {
+    try {
+      const { data } = await axios.put(
+        `/api/review/${productId}`,
+        review,
+        sendToken()
+      );
+      return data;
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+);
+
 const initialState = {
   reviewsById: [],
   allReviews: [],
@@ -62,6 +79,9 @@ const reviewtSlice = createSlice({
       state.allReviews = action.payload;
     },
     [postReview.fulfilled]: (state, action) => {
+      state.postReview = action.payload;
+    },
+    [updateReview.fulfilled]: (state, action) => {
       state.postReview = action.payload;
     },
   },
