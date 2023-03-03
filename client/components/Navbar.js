@@ -90,7 +90,12 @@ const Navbar = () => {
             </Link>
           </Typography>
           {isLoggedIn ? (
-            <div>
+            <div style={{ display: "flex" }}>
+              <Typography variant="h6" className={classes.title}>
+                Hi,{" "}
+                {auth.email.split("@")[0].charAt(0).toUpperCase() +
+                  auth.email.split("@")[0].split("").splice(1).join("")}
+              </Typography>
               <Button color="inherit" onClick={handleLogout}>
                 <FontAwesomeIcon
                   icon={faSignOutAlt}
