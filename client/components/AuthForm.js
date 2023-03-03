@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { authenticate } from "../store/authSlice";
 import { useNavigate } from "react-router-dom";
 import {
-  createMuiTheme,
+  createTheme,
   makeStyles,
   ThemeProvider,
 } from "@material-ui/core/styles";
@@ -17,7 +17,7 @@ import {
   Paper,
 } from "@material-ui/core";
 
-const theme = createMuiTheme({
+const theme = createTheme({
   palette: {
     primary: {
       main: "#1A237E",

@@ -29,6 +29,12 @@ const useStyles = makeStyles((theme) => ({
       width: "90%",
     },
   },
+  closeButton: {
+    position: "absolute",
+    top: 1,
+    right: 1,
+    cursor: "pointer",
+  },
   textField: {
     width: "100%",
     marginTop: theme.spacing(2),
@@ -176,6 +182,9 @@ const ModalWithRating = ({ productId, averageRating }) => {
           aria-describedby="simple-modal-description"
         >
           <div className={classes.paper}>
+            <button className={classes.closeButton} onClick={handleClose}>
+              X
+            </button>
             <h2 id="simple-modal-title">Rate this product</h2>
             <Rating />
             <TextField

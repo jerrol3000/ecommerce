@@ -5,6 +5,17 @@ const {
   models: { Product, Cart, User, CartItem },
 } = require("../db");
 
+const requireToken = async (req, res, next) => {
+  try {
+    const token = req.headers.authorization;
+    const user = await User.findByToken(token);
+    req.user = user;
+    next();
+  } catch (error) {
+    next(error);
+  }
+};
+
 // matches GET requests to /api/products
 router.post("/", upload.single("image"), async (req, res, next) => {
   try {
@@ -16,12 +27,11 @@ router.post("/", upload.single("image"), async (req, res, next) => {
   }
 });
 
-router.get("/:cartId", async (req, res, next) => {
+router.get("/", requireToken, async (req, res, next) => {
+  const userId = req.user.id;
   try {
     const cart = await Cart.findAll({
-      where: {
-        userId: 1,
-      },
+      where: { userId },
       include: {
         model: Product,
         through: CartItem,

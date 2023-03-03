@@ -1,29 +1,25 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import { Container, Grid, Typography, Link } from "@material-ui/core";
-import {
-  faFacebookSquare,
-  faTwitterSquare,
-  faInstagramSquare,
-} from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faFacebook,
+  faTwitter,
+  faInstagram,
+} from "@fortawesome/free-brands-svg-icons";
+import { Typography, Link, Grid, Divider, makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    backgroundColor: theme.palette.primary.main,
-    color: theme.palette.primary.contrastText,
-    padding: theme.spacing(4),
-    marginTop: theme.spacing(4),
+  footer: {
+    bottom: 0,
+    width: "100%",
+    height: "60px",
+    backgroundColor: "#b2b3ba",
+    color: "#fff",
+    paddingTop: "20px",
+    paddingBottom: "110px",
+    paddingLeft: "30px",
   },
-  icon: {
-    marginRight: theme.spacing(1),
-    fontSize: "24px",
-  },
-  link: {
-    color: theme.palette.primary.contrastText,
-    "&:hover": {
-      color: theme.palette.secondary.main,
-    },
+  socialIcons: {
+    marginRight: theme.spacing(2),
   },
 }));
 
@@ -31,78 +27,50 @@ const Footer = () => {
   const classes = useStyles();
 
   return (
-    <div className={classes.root}>
-      <Container maxWidth="lg">
-        <Grid container spacing={4}>
-          <Grid item xs={12} sm={6} md={4}>
-            <Typography variant="h6" gutterBottom>
-              About Us
-            </Typography>
-            <Typography variant="body1" gutterBottom>
-              We're a sticker company that loves to create unique and
-              eye-catching designs.
-            </Typography>
-          </Grid>
-          <Grid item xs={12} sm={6} md={4}>
-            <Typography variant="h6" gutterBottom>
-              Contact Us
-            </Typography>
-            <Typography variant="body1" gutterBottom>
-              Email: info@stickers.com
-            </Typography>
-            <Typography variant="body1" gutterBottom>
-              Phone: (555) 555-5555
-            </Typography>
-          </Grid>
-          <Grid item xs={12} md={4}>
-            <Typography variant="h6" gutterBottom>
-              Follow Us
-            </Typography>
-            <Link
-              href="https://www.facebook.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={classes.link}
-            >
-              <FontAwesomeIcon
-                icon={faFacebookSquare}
-                className={classes.icon}
-              />
-              Facebook
-            </Link>
-            <br />
-            <Link
-              href="https://twitter.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={classes.link}
-            >
-              <FontAwesomeIcon
-                icon={faTwitterSquare}
-                className={classes.icon}
-              />
-              Twitter
-            </Link>
-            <br />
-            <Link
-              href="https://www.instagram.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={classes.link}
-            >
-              <FontAwesomeIcon
-                icon={faInstagramSquare}
-                className={classes.icon}
-              />
-              Instagram
-            </Link>
-          </Grid>
+    <footer className={classes.footer}>
+      <Grid container alignItems="center">
+        <Grid item xs={12} md={4}>
+          <Typography variant="h6">Follow Us</Typography>
+          <Link href="#" color="inherit" className={classes.socialIcons}>
+            <FontAwesomeIcon icon={faFacebook} size="2x" />
+          </Link>
+          <Link href="#" color="inherit" className={classes.socialIcons}>
+            <FontAwesomeIcon icon={faTwitter} size="2x" />
+          </Link>
+          <Link href="#" color="inherit" className={classes.socialIcons}>
+            <FontAwesomeIcon icon={faInstagram} size="2x" />
+          </Link>
         </Grid>
-        <Typography variant="body2" align="center" gutterBottom>
-          © 2023 Sticker Farm. All rights reserved.
-        </Typography>
-      </Container>
-    </div>
+        <Grid item xs={12} md={4}>
+          <Typography variant="h6">About Us</Typography>
+          <Link href="#" color="inherit">
+            Our Story
+          </Link>
+          <br />
+          <Link href="#" color="inherit">
+            Contact Us
+          </Link>
+        </Grid>
+        <Grid item xs={12} md={4}>
+          <Typography variant="h6">Support</Typography>
+          <Link href="#" color="inherit">
+            FAQ
+          </Link>
+          <br />
+          <Link href="#" color="inherit">
+            Shipping Policy
+          </Link>
+          <br />
+          <Link href="#" color="inherit">
+            Returns & Exchanges
+          </Link>
+        </Grid>
+      </Grid>
+      <Divider style={{ margin: "20px 0" }} />
+      <Typography variant="subtitle1" align="center">
+        Sticker Farm &copy; 2023
+      </Typography>
+    </footer>
   );
 };
 

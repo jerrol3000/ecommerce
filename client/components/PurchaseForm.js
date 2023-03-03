@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./css/purchaseForm.css";
 import { createOrder } from "../store/checkoutSlice";
+import { Link } from "react-router-dom";
 
 const PurchaseForm = () => {
   const [size, setSize] = useState(null);
@@ -189,9 +190,11 @@ const PurchaseForm = () => {
           />
         )}
         <div>
-          <button className="submit-button" type="submit">
-            Continue
-          </button>
+          <Link to="/checkout">
+            <button className="submit-button" type="submit">
+              Continue
+            </button>
+          </Link>
         </div>
       </form>
     </div>
