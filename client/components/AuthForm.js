@@ -67,7 +67,7 @@ const AuthForm = ({ formName, displayName, error }) => {
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    const email = evt.target.email.value;
+    const email = evt.target.email.value.toLowerCase();
     const password = evt.target.password.value;
     dispatch(authenticate({ email, password, formName }));
   };
