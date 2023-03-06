@@ -165,12 +165,14 @@ const ModalWithRating = ({ productId, averageRating }) => {
                   <FontAwesomeIcon icon={farStar} />
                 )
               )
-              .map((star, index) => (
-                <span key={index}>{star}</span>
+              .map((star, i) => (
+                <span key={i}>{star}</span>
               ))}
           </span>
         ) : (
-          Array(5).fill(<FontAwesomeIcon icon={farStar} />)
+          Array(5)
+            .fill(<FontAwesomeIcon icon={farStar} />)
+            .map((star, i) => <span key={i}>{star}</span>)
         )}
       </button>
 

@@ -17,18 +17,21 @@ const requireToken = async (req, res, next) => {
 };
 
 // matches GET requests to /api/products
-router.post("/", upload.single("image"), async (req, res, next) => {
+router.post("/", upload.single("image"), async (req, res) => {
+  const { price, size, quantity } = req.body;
+  console.log("first", req.file);
+  const image = req.file.buffer;
   try {
-    const order = await Cart.create(req.body);
-    res.json(order);
+    const cart = await Cart.create({ price, size, quantity, image });
+    res.json(cart);
   } catch (error) {
-    res.status(500).send("There was an error checking out your order");
-    next(error);
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 
-router.get("/", requireToken, async (req, res, next) => {
-  const userId = req.user.id;
+router.get("/:id", async (req, res, next) => {
+  const userId = req.params.id;
   try {
     const cart = await Cart.findAll({
       where: { userId },

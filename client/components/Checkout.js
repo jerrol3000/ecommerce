@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { fetchCart } from "../store/checkoutSlice";
 import { useDispatch, useSelector } from "react-redux";
 import "./css/checkout.css";
+import PreviewCart from "./PreviewCart";
 
 function Checkout() {
   const [formData, setFormData] = useState({
@@ -11,14 +12,6 @@ function Checkout() {
     expiration: "",
     cvv: "",
   });
-
-  const dispatch = useDispatch();
-  const { id } = useSelector((state) => state.auth);
-  const { checkout } = useSelector((state) => state);
-
-  useEffect(() => {
-    dispatch(fetchCart(id));
-  }, []);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -34,14 +27,7 @@ function Checkout() {
 
   return (
     <div>
-      {checkout.map(({ size, price, image, id }) => (
-        <div key={id}>
-          <h3>Selected Dementions -{size}</h3>
-          <h4>Total cost is - ${price}</h4>
-          {image ? <img src={null} alt="uploaded image" /> : <p>Loading...</p>}
-        </div>
-      ))}
-
+      <PreviewCart />
       <div className="checkout-container">
         <h2>Checkout</h2>
         <form onSubmit={handleSubmit}>

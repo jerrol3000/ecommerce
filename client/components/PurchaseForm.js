@@ -53,6 +53,7 @@ const PurchaseForm = () => {
     userId: user.id,
     productId: id,
   };
+
   //conditionally handle checkout if it his a logged in user or a guest user
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -80,7 +81,7 @@ const PurchaseForm = () => {
 
   return (
     <div className="form-container">
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} encType="multipart/form-data">
         <h2>Upload Artwork</h2>
         <div>
           <input type="file" name="file" onChange={handleFileChange} />
@@ -190,11 +191,9 @@ const PurchaseForm = () => {
           />
         )}
         <div>
-          <Link to="/checkout">
-            <button className="submit-button" type="submit">
-              Continue
-            </button>
-          </Link>
+          <button className="submit-button" type="submit">
+            Continue
+          </button>
         </div>
       </form>
     </div>

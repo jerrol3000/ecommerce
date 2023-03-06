@@ -73,7 +73,7 @@ const Navbar = () => {
             aria-label="menu"
             onClick={handleMenu}
           >
-            <Badge badgeContent={1} color="secondary">
+            <Badge overlap="rectangular" badgeContent={1} color="secondary">
               <FontAwesomeIcon
                 icon={faShoppingCart}
                 className={classes.cartIcon}
