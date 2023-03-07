@@ -9,6 +9,7 @@ import Checkout from "./Checkout";
 import Rating from "./Rating";
 import Reviews from "./Reviews";
 import PreviewCart from "./PreviewCart";
+import AdminDashboard from "./AdminDasboard";
 
 const Routes = () => {
   const dispatch = useDispatch();
@@ -23,15 +24,12 @@ const Routes = () => {
     <AppRoutes>
       <>
         {auth.userType === "admin" ? (
-          <>
-            {/* show admin page
-          show customer information
-          show previously purchased */}
-          </>
+          <>{/* <Route path="/admin" element={<AdminDashboard />} /> */}</>
         ) : (
           <>
             <Route path="*" element={<Navigate to="/" replace />} />
             <Route path="/" element={<Home />} />
+            <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/products/:productId" element={<SingleProduct />} />
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/checkout/:userId" element={<PreviewCart />} />

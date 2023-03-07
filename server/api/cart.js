@@ -39,7 +39,6 @@ const upload = multer({
 // matches GET requests to /api/products
 router.post("/", upload.single("image"), async (req, res) => {
   const { userId, productId, price, size, quantity } = req.body;
-  console.log("req.file", req.file);
   try {
     const cart = await Cart.create({
       userId,

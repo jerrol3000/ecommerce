@@ -8,7 +8,6 @@ export const createOrder = createAsyncThunk(
       const { data } = await axios.post(`/api/checkout`, newOrder, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-      console.log("data", newOrder);
       return data;
     } catch (error) {
       console.log(error);
