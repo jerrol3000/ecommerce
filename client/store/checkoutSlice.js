@@ -5,7 +5,10 @@ export const createOrder = createAsyncThunk(
   "order/createOrder",
   async (newOrder) => {
     try {
-      const { data } = await axios.post(`/api/checkout`, newOrder);
+      const { data } = await axios.post(`/api/checkout`, newOrder, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      console.log("data", newOrder);
       return data;
     } catch (error) {
       console.log(error);

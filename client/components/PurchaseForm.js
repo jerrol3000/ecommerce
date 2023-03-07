@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./css/purchaseForm.css";
 import { createOrder } from "../store/checkoutSlice";
-import { Link } from "react-router-dom";
 
 const PurchaseForm = () => {
   const [size, setSize] = useState(null);
@@ -43,8 +42,10 @@ const PurchaseForm = () => {
   };
 
   const handleFileChange = (event) => {
-    setFile(event.target.files[0]);
+    const newFile = event.target.files[0];
+    setFile(newFile);
   };
+
   const orderDetail = {
     image: file,
     price: quantity * price,
@@ -81,7 +82,7 @@ const PurchaseForm = () => {
 
   return (
     <div className="form-container">
-      <form onSubmit={handleSubmit} encType="multipart/form-data">
+      <form onSubmit={handleSubmit}>
         <h2>Upload Artwork</h2>
         <div>
           <input type="file" name="file" onChange={handleFileChange} />

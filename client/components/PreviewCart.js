@@ -15,7 +15,7 @@ function PreviewCart() {
     <div>
       {checkout.map((item) => (
         <div key={item.id}>
-          <img src={`data:image/png;base64,${item.image}`} alt="item" />
+          <img src={item.image} alt="item" />
           <div>{item.price}</div>
           <div>{item.size}</div>
           <div>{item.quantity}</div>

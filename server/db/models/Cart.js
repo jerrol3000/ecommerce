@@ -3,20 +3,8 @@ const db = require("../db");
 
 module.exports = db.define("cart", {
   image: {
-    type: Sequelize.DataTypes.BLOB("long"),
+    type: Sequelize.STRING,
     allowNull: false,
-    get() {
-      return this.getDataValue("image").toString("utf8"); // return the image as a string
-    },
-    set(value) {
-      if (typeof value === "string") {
-        // set the image as a string
-        this.setDataValue("image", Buffer.from(value, "utf8"));
-      } else {
-        // set the image as a buffer
-        this.setDataValue("image", value);
-      }
-    },
   },
   price: {
     type: Sequelize.FLOAT,
@@ -24,6 +12,12 @@ module.exports = db.define("cart", {
   },
   size: {
     type: Sequelize.STRING,
+  },
+  productId: {
+    type: Sequelize.INTEGER,
+  },
+  userId: {
+    type: Sequelize.INTEGER,
   },
   quantity: {
     type: Sequelize.INTEGER,

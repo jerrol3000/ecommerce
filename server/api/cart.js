@@ -1,6 +1,6 @@
 const router = require("express").Router();
+const path = require("path");
 const multer = require("multer");
-const upload = multer({ dest: "uploads/" });
 const {
   models: { Product, Cart, User, CartItem },
 } = require("../db");
@@ -16,13 +16,39 @@ const requireToken = async (req, res, next) => {
   }
 };
 
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, "./tmp/image"),
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname));
+  },
+});
+const upload = multer({
+  storage,
+  limits: { fileSize: "5000000" },
+  fileFilter: (req, file, cb) => {
+    const fileTypes = /jpeg|jpg|png|gif/;
+    const mimeType = fileTypes.test(file.mimetype);
+    const extname = fileTypes.test(path.extname(file.originalname));
+    if (mimeType && extname) {
+      return cb(null, true);
+    }
+    cb("image you are trying to upload is of incorrect type");
+  },
+});
+
 // matches GET requests to /api/products
 router.post("/", upload.single("image"), async (req, res) => {
-  const { price, size, quantity } = req.body;
-  console.log("first", req.file);
-  const image = req.file.buffer;
+  const { userId, productId, price, size, quantity } = req.body;
+  console.log("req.file", req.file);
   try {
-    const cart = await Cart.create({ price, size, quantity, image });
+    const cart = await Cart.create({
+      userId,
+      productId,
+      price,
+      size,
+      quantity,
+      image: req.file.path,
+    });
     res.json(cart);
   } catch (error) {
     console.error(error);
