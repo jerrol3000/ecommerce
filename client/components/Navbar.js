@@ -10,6 +10,8 @@ import {
   faSignInAlt,
   faUserPlus,
   faShoppingCart,
+  faTrashAlt,
+  faEdit,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   AppBar,
@@ -22,7 +24,6 @@ import {
   Badge,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-// import { fetchCart } from "../store/checkoutSlice";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -69,6 +70,7 @@ const Navbar = () => {
     <div className={classes.root}>
       <AppBar position="static" color="primary">
         <Toolbar>
+          {" "}
           <IconButton
             edge="start"
             className={classes.menuButton}
@@ -81,6 +83,7 @@ const Navbar = () => {
               badgeContent={checkout.length}
               color="secondary"
             >
+              {" "}
               <FontAwesomeIcon
                 icon={faShoppingCart}
                 className={classes.cartIcon}
@@ -131,17 +134,40 @@ const Navbar = () => {
           )}
         </Toolbar>
       </AppBar>
-      {/* <Menu
+      <Menu
         anchorEl={anchorEl}
         keepMounted
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose}>
-          {checkout.length &&
-            checkout.map((item) => <div key={item.id}> {item.size}</div>)}
+        {checkout.length ? (
+          checkout.map((item) => (
+            <MenuItem key={item.id}>
+              <div>{item.size}</div>
+              <div>
+                <IconButton>
+                  <FontAwesomeIcon icon={faEdit} />
+                </IconButton>
+                <IconButton>
+                  <FontAwesomeIcon icon={faTrashAlt} />
+                </IconButton>
+              </div>
+            </MenuItem>
+          ))
+        ) : (
+          <MenuItem>Cart is empty</MenuItem>
+        )}
+        <MenuItem onClick={handleClose} style={{ justifyContent: "center" }}>
+          <Button
+            variant="contained"
+            color="primary"
+            component={Link}
+            to={`checkout/${auth.id}`}
+          >
+            Continue to Checkout
+          </Button>
         </MenuItem>
-      </Menu> */}
+      </Menu>
     </div>
   );
 };

@@ -16,14 +16,17 @@ const Routes = () => {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
   const isLoggedIn = !!auth.id;
+  const userId = auth.id;
 
   useEffect(() => {
     dispatch(me());
   }, []);
 
   useEffect(() => {
-    dispatch(fetchCart(3));
-  }, [dispatch]);
+    if (userId) {
+      dispatch(fetchCart(userId));
+    }
+  }, [userId]);
 
   return (
     <AppRoutes>
