@@ -73,6 +73,12 @@ async function seed() {
       email: "murphy@gm.com",
       password: "123",
     }),
+    User.create({
+      username: "Jerrol",
+      email: "jerrol@gm.com",
+      password: "123",
+      isAdmin: true,
+    }),
 
     await Promise.all(
       products.map((product) => {

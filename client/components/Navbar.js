@@ -65,7 +65,6 @@ const Navbar = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
   return (
     <div className={classes.root}>
       <AppBar position="static" color="primary">
@@ -90,6 +89,16 @@ const Navbar = () => {
               />
             </Badge>
           </IconButton>
+          {auth.isAdmin && (
+            <Button
+              variant="contained"
+              color="secondary"
+              component={Link}
+              to="/admin"
+            >
+              Admin
+            </Button>
+          )}
           <Typography variant="h6" className={classes.title}>
             <Link to="/home">
               <img
@@ -103,8 +112,8 @@ const Navbar = () => {
             <div style={{ display: "flex" }}>
               <Typography variant="h6" className={classes.title}>
                 Hi,{" "}
-                {auth.email.split("@")[0].charAt(0).toUpperCase() +
-                  auth.email.split("@")[0].split("").splice(1).join("")}
+                {auth.username.charAt(0).toUpperCase() +
+                  auth.username.split("").splice(1).join("")}
               </Typography>
               <Button color="inherit" onClick={handleLogout}>
                 <FontAwesomeIcon
@@ -143,7 +152,7 @@ const Navbar = () => {
         {checkout.length ? (
           checkout.map((item) => (
             <MenuItem key={item.id}>
-              <div>{item.size}</div>
+              <span>{item.size} </span>
               <div>
                 <IconButton>
                   <FontAwesomeIcon icon={faEdit} />
@@ -158,14 +167,16 @@ const Navbar = () => {
           <MenuItem>Cart is empty</MenuItem>
         )}
         <MenuItem onClick={handleClose} style={{ justifyContent: "center" }}>
-          <Button
-            variant="contained"
-            color="primary"
-            component={Link}
-            to={`checkout/${auth.id}`}
-          >
-            Continue to Checkout
-          </Button>
+          {checkout.length && (
+            <Button
+              variant="contained"
+              color="primary"
+              component={Link}
+              to={`checkout/${auth.id}`}
+            >
+              Continue to Checkout
+            </Button>
+          )}
         </MenuItem>
       </Menu>
     </div>

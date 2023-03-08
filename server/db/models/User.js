@@ -18,6 +18,14 @@ const User = db.define("user", {
     type: Sequelize.STRING,
     allowNull: false,
   },
+  isAdmin: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false,
+  },
+  username: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
 });
 
 // instance methods
