@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { Routes as AppRoutes, Route, Navigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { me } from "../store/authSlice";
+import { fetchCart } from "../store/checkoutSlice";
 import SingleProduct from "./SingleProduct";
 import { Login, Signup } from "./AuthForm";
 import Home from "./Home";
@@ -20,6 +21,10 @@ const Routes = () => {
     dispatch(me());
   }, []);
 
+  useEffect(() => {
+    dispatch(fetchCart(3));
+  }, [dispatch]);
+
   return (
     <AppRoutes>
       <>
@@ -31,8 +36,7 @@ const Routes = () => {
             <Route path="/" element={<Home />} />
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/products/:productId" element={<SingleProduct />} />
-            <Route path="/checkout" element={<Checkout />} />
-            <Route path="/checkout/:userId" element={<PreviewCart />} />
+            <Route path="/checkout/:userId" element={<Checkout />} />
             <Route path="/review/:productId" element={<Reviews />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />

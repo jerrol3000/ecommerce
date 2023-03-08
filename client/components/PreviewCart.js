@@ -1,14 +1,16 @@
 import React, { useEffect } from "react";
 import { fetchCart } from "../store/checkoutSlice";
+import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 function PreviewCart() {
   const dispatch = useDispatch();
   const { checkout } = useSelector((state) => state);
-  const { id } = useSelector((state) => state.auth);
+
+  const params = useParams();
 
   useEffect(() => {
-    dispatch(fetchCart(1));
+    dispatch(fetchCart(params.userId));
   }, []);
 
   return (

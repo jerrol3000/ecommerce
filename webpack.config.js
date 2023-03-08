@@ -8,7 +8,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.jsx?$/,
+        test: /\.jsx?|(jpe?g|gif|png|svg)$/i,
         exclude: /node_modules/,
         loader: "babel-loader",
         options: {

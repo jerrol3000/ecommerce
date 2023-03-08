@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./css/purchaseForm.css";
-import { createOrder } from "../store/checkoutSlice";
+import { createOrder, fetchCart } from "../store/checkoutSlice";
 
 const PurchaseForm = () => {
   const [size, setSize] = useState(null);
@@ -60,6 +60,7 @@ const PurchaseForm = () => {
     event.preventDefault();
     if (user.id) {
       dispatch(createOrder(orderDetail));
+      dispatch(fetchCart(user.id));
     } else {
       const reader = new FileReader();
       reader.readAsDataURL(file);

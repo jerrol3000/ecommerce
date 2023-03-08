@@ -31,7 +31,7 @@ const orderSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: {
-    [createOrder.fulfilled]: (state, action) => action.payload,
+    [createOrder.fulfilled]: (state, action) => [action.payload, ...state],
     [fetchCart.fulfilled]: (state, action) => action.payload,
   },
 });

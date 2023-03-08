@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { logout } from "../store";
@@ -22,6 +22,7 @@ import {
   Badge,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+// import { fetchCart } from "../store/checkoutSlice";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -50,6 +51,8 @@ const Navbar = () => {
   const isLoggedIn = !!auth.id;
   const [anchorEl, setAnchorEl] = useState(null);
 
+  const { checkout } = useSelector((state) => state);
+
   const handleLogout = () => {
     dispatch(logout());
   };
@@ -73,7 +76,11 @@ const Navbar = () => {
             aria-label="menu"
             onClick={handleMenu}
           >
-            <Badge overlap="rectangular" badgeContent={1} color="secondary">
+            <Badge
+              overlap="rectangular"
+              badgeContent={checkout.length}
+              color="secondary"
+            >
               <FontAwesomeIcon
                 icon={faShoppingCart}
                 className={classes.cartIcon}
@@ -124,14 +131,17 @@ const Navbar = () => {
           )}
         </Toolbar>
       </AppBar>
-      <Menu
+      {/* <Menu
         anchorEl={anchorEl}
         keepMounted
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose}>Shopping Cart</MenuItem>
-      </Menu>
+        <MenuItem onClick={handleClose}>
+          {checkout.length &&
+            checkout.map((item) => <div key={item.id}> {item.size}</div>)}
+        </MenuItem>
+      </Menu> */}
     </div>
   );
 };
