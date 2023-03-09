@@ -51,6 +51,7 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
   const isLoggedIn = !!auth.id;
+
   const [anchorEl, setAnchorEl] = useState(null);
   const [editingItemId, setEditingItemId] = useState(null);
 
@@ -169,9 +170,33 @@ const Navbar = () => {
               >
                 {editingItemId === item.id ? (
                   <div>
-                    <input type="text" defaultValue={item.name} />
-                    <input type="number" defaultValue={item.quantity} />
-                    <input type="number" defaultValue={item.price} />
+                    <div style={{ display: "flex", flexDirection: "column" }}>
+                      <Typography variant="subtitle1">Quantity</Typography>
+                      <input
+                        type="number"
+                        defaultValue={item.quantity}
+                        style={{
+                          border: "none",
+                          borderBottom: "1px solid gray",
+                          padding: "5px",
+                          marginBottom: "10px",
+                          width: "100%",
+                        }}
+                      />
+                    </div>
+                    <div style={{ display: "flex", flexDirection: "column" }}>
+                      <Typography variant="subtitle1">Size</Typography>
+                      <input
+                        type="text"
+                        defaultValue={item.size}
+                        style={{
+                          border: "none",
+                          borderBottom: "1px solid gray",
+                          padding: "5px",
+                          width: "100%",
+                        }}
+                      />
+                    </div>
                   </div>
                 ) : (
                   <div>
@@ -183,6 +208,7 @@ const Navbar = () => {
                     </Typography>
                   </div>
                 )}
+
                 <div>
                   {editingItemId === item.id ? (
                     <IconButton>

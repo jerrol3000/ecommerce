@@ -31,13 +31,24 @@ const Routes = () => {
   return (
     <AppRoutes>
       <>
-        {auth.userType === "admin" ? (
-          <>{/* <Route path="/admin" element={<AdminDashboard />} /> */}</>
+        {auth.isAdmin ? (
+          <>
+            {" "}
+            <Route path="*" element={<Navigate to="/" replace />} />
+            <Route path="/" element={<Home />} />
+            <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/products/:productId" element={<SingleProduct />} />
+            <Route path="/checkout/:userId" element={<Checkout />} />
+            <Route path="/review/:productId" element={<Reviews />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/" element={<Login />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </>
         ) : (
           <>
             <Route path="*" element={<Navigate to="/" replace />} />
             <Route path="/" element={<Home />} />
-            <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/products/:productId" element={<SingleProduct />} />
             <Route path="/checkout/:userId" element={<Checkout />} />
             <Route path="/review/:productId" element={<Reviews />} />
