@@ -8,11 +8,20 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.jsx?|(jpe?g|gif|png|svg)$/i,
+        test: /\.jsx?$/,
         exclude: /node_modules/,
         loader: "babel-loader",
         options: {
           presets: ["@babel/preset-react"],
+        },
+      },
+      {
+        test: /\.(jpe?g|gif|png|svg)$/i,
+        exclude: /node_modules/,
+        loader: "file-loader",
+        options: {
+          name: "[name].[ext]",
+          outputPath: "images/",
         },
       },
       {

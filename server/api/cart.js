@@ -17,7 +17,7 @@ const requireToken = async (req, res, next) => {
 };
 
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, "./public/uploads"),
+  destination: (req, file, cb) => cb(null, "./public/uploads/images"),
   filename: (req, file, cb) => {
     cb(null, Date.now() + path.extname(file.originalname));
   },
@@ -39,6 +39,7 @@ const upload = multer({
 // matches GET requests to /api/products
 router.post("/", upload.single("image"), async (req, res) => {
   const { userId, productId, price, size, quantity, name } = req.body;
+  let { path } = req.file;
   try {
     const cart = await Cart.create({
       name,
@@ -47,7 +48,7 @@ router.post("/", upload.single("image"), async (req, res) => {
       price,
       size,
       quantity,
-      image: req.file.path,
+      image: path,
     });
     res.json(cart);
   } catch (error) {
