@@ -12,6 +12,7 @@ import {
   faShoppingCart,
   faTrashAlt,
   faEdit,
+  faSave,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   AppBar,
@@ -51,6 +52,7 @@ const Navbar = () => {
   const auth = useSelector((state) => state.auth);
   const isLoggedIn = !!auth.id;
   const [anchorEl, setAnchorEl] = useState(null);
+  const [editingItemId, setEditingItemId] = useState(null);
 
   const { checkout } = useSelector((state) => state);
 
@@ -64,6 +66,12 @@ const Navbar = () => {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+  const handleSave = (itemId, newName, newQuantity, newPrice) => {
+    // Call your API to update the item's values here
+    // Or update your state with the new values
+
+    setEditingItemId(null); // Reset the editingItemId to exit edit mode
   };
   return (
     <div className={classes.root}>
@@ -152,14 +160,43 @@ const Navbar = () => {
         {checkout.length ? (
           checkout.map((item) => (
             <MenuItem key={item.id}>
-              <span>{item.size} </span>
-              <div>
-                <IconButton>
-                  <FontAwesomeIcon icon={faEdit} />
-                </IconButton>
-                <IconButton>
-                  <FontAwesomeIcon icon={faTrashAlt} />
-                </IconButton>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                {editingItemId === item.id ? (
+                  <div>
+                    <input type="text" defaultValue={item.name} />
+                    <input type="number" defaultValue={item.quantity} />
+                    <input type="number" defaultValue={item.price} />
+                  </div>
+                ) : (
+                  <div>
+                    <Typography variant="subtitle1">
+                      {item.name} ({item.size})
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary">
+                      quantity: {item.quantity} price: ${item.price} USD
+                    </Typography>
+                  </div>
+                )}
+                <div>
+                  {editingItemId === item.id ? (
+                    <IconButton>
+                      <FontAwesomeIcon icon={faSave} />
+                    </IconButton>
+                  ) : (
+                    <IconButton onClick={() => setEditingItemId(item.id)}>
+                      <FontAwesomeIcon icon={faEdit} />
+                    </IconButton>
+                  )}
+                  <IconButton>
+                    <FontAwesomeIcon icon={faTrashAlt} />
+                  </IconButton>
+                </div>
               </div>
             </MenuItem>
           ))

@@ -15,7 +15,7 @@ const PurchaseForm = () => {
   const dispatch = useDispatch();
 
   const user = useSelector((state) => state.auth);
-  const { id, price } = useSelector((state) => state.products.product);
+  const { id, price, name } = useSelector((state) => state.products.product);
 
   const handleSizeChange = (event) => {
     let input = event.target.value;
@@ -47,6 +47,7 @@ const PurchaseForm = () => {
   };
 
   const orderDetail = {
+    name,
     image: file,
     price: quantity * price,
     size: size,
@@ -69,6 +70,7 @@ const PurchaseForm = () => {
           localStorage.setItem(
             "order",
             JSON.stringify({
+              name,
               image: reader.result,
               price: quantity * price,
               size: size,
