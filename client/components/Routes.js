@@ -10,6 +10,7 @@ import Rating from "./Rating";
 import Reviews from "./Reviews";
 import PurchaseForm from "./PurchaseForm";
 import AdminDashboard from "./AdminDasboard";
+import CheckoutForm from "./CheckoutForm";
 
 const Routes = () => {
   const dispatch = useDispatch();
@@ -37,7 +38,7 @@ const Routes = () => {
             <Route path="/" element={<Home />} />
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/products/:productId" element={<SingleProduct />} />
-            <Route path="/checkout/:userId" element={<PurchaseForm />} />
+            <Route path="/checkout/:userId" element={<CheckoutForm />} />
             <Route path="/review/:productId" element={<Reviews />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
@@ -49,7 +50,7 @@ const Routes = () => {
             <Route path="*" element={<Navigate to="/" replace />} />
             <Route path="/" element={<Home />} />
             <Route path="/products/:productId" element={<SingleProduct />} />
-            <Route path="/checkout/:userId" element={<PurchaseForm />} />
+            <Route path="/checkout/:userId" element={<CheckoutForm />} />
             <Route path="/review/:productId" element={<Reviews />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
