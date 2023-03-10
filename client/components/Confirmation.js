@@ -3,35 +3,30 @@ import { Typography, Box, Button, Grid } from "@mui/material";
 
 const Confirmation = ({ onPrev, onSubmit }) => {
   return (
-    <Box sx={{ maxWidth: 500, mx: "auto", p: 3 }}>
-      <Typography variant="h4" gutterBottom>
+    <Box sx={{ maxWidth: 600, mx: "auto", p: 2 }}>
+      <Typography variant="h6" gutterBottom>
         Step 3: Confirmation
       </Typography>
-      <Typography variant="body1" gutterBottom>
+      <Typography variant="subtitle1" gutterBottom>
         Review your order details:
       </Typography>
-      <Grid container spacing={2} sx={{ my: 2 }}>
+      <Grid container spacing={1} sx={{ my: 1 }}>
         <Grid item xs={12}>
           <Typography variant="h6">Shipping Information</Typography>
-          <Typography variant="body1">...</Typography>
+          <Typography variant="subtitle2">...</Typography>
         </Grid>
         <Grid item xs={12}>
           <Typography variant="h6">Credit Card Information</Typography>
-          <Typography variant="body1">...</Typography>
+          <Typography variant="subtitle2">...</Typography>
         </Grid>
         <Grid item xs={12}>
           <Typography variant="h6">Order Summary</Typography>
-          <Typography variant="body1">...</Typography>
+          <Typography variant="subtitle2">...</Typography>
         </Grid>
       </Grid>
-      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-        {/* <Button variant="contained" onClick={onPrev}>
-          Back
-        </Button>
-        <Button variant="contained" onClick={onSubmit}>
-          Submit
-        </Button> */}
-      </Box>
+      <Box
+        sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}
+      ></Box>
     </Box>
   );
 };

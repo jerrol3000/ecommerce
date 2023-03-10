@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import anime from "animejs";
 import { styled } from "@mui/material/styles";
+
 import { Button, Container, Typography } from "@mui/material";
+import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
+import { IconButton } from "@mui/material";
 import ShippingInfo from "./ShippingInfo";
 import CreditCardInfo from "./CreditCardInfo";
 import Confirmation from "./Confirmation";
@@ -14,6 +17,31 @@ const FormContainer = styled(Container)({
   justifyContent: "center",
   minHeight: "100vh",
   backgroundColor: "#f5f5f5",
+  "@media (max-width: 600px)": {
+    /* Adjust layout for small screens */
+    "& .MuiTypography-h2": {
+      fontSize: "2rem",
+    },
+    "& .MuiButton-root": {
+      padding: "0.5rem",
+    },
+    "& .MuiTypography-body1": {
+      fontSize: "0.8rem",
+    },
+  },
+  "@media (max-width: 400px)": {
+    /* Adjust layout for extra small screens */
+    "& .MuiTypography-h2": {
+      fontSize: "1.5rem",
+    },
+    "& .MuiButton-root": {
+      padding: "0.3rem",
+      fontSize: "0.7rem",
+    },
+    "& .MuiTypography-body1": {
+      fontSize: "0.6rem",
+    },
+  },
 });
 
 const FormHeader = styled("div")({
@@ -22,6 +50,7 @@ const FormHeader = styled("div")({
 
 const FormBody = styled("div")({
   width: "100%",
+  position: "relative",
 });
 
 const FormFooter = styled("div")({
@@ -32,22 +61,72 @@ const FormFooter = styled("div")({
 });
 
 const BackButton = styled(Button)({
-  marginRight: "1rem",
+  position: "absolute",
+  top: "50%",
+  left: "1rem",
+  transform: "translateY(-50%)",
+  "@media (max-width: 600px)": {
+    left: "0.5rem",
+  },
 });
 
 const NextButton = styled(Button)({
-  marginLeft: "1rem",
+  position: "absolute",
+  top: "50%",
+  right: "1rem",
+  transform: "translateY(-50%)",
+  "@media (max-width: 600px)": {
+    right: "0.5rem",
+  },
 });
 
 const SubmitButton = styled(Button)({
-  marginLeft: "auto",
+  margin: "2rem auto 0",
+  display: "block",
+  padding: "1.5rem 3rem",
+  fontSize: "1.5rem",
+  fontWeight: "bold",
+  backgroundColor: "#00bcd4",
+  color: "#fff",
+  "&:hover": {
+    backgroundColor: "#00a0b4",
+  },
+  "&:disabled": {
+    backgroundColor: "#ccc",
+    color: "#666",
+  },
 });
+
+const ProgressContainer = styled("div")({
+  width: "100%",
+  height: "6px",
+  backgroundColor: "#ddd",
+});
+
+const ProgressBar = styled("div")(({ progress }) => ({
+  width: `${progress}%`,
+  height: "100%",
+  backgroundColor: "#00bcd4",
+  transition: "width 0.5s ease",
+}));
 
 const PurchaseForm = () => {
   const [step, setStep] = useState(1);
+  const [progress, setProgress] = useState(0);
+  const progressRef = useRef(null);
+
+  useEffect(() => {
+    anime({
+      targets: progressRef.current,
+      width: `${progress}%`,
+      easing: "easeInOutQuad",
+      duration: 500,
+    });
+  }, [progress]);
 
   const handleNext = (event) => {
     event.preventDefault();
+    setProgress((prevProgress) => prevProgress + 33.33);
     anime({
       targets: ".form-step",
       translateX: -window.innerWidth,
@@ -59,6 +138,7 @@ const PurchaseForm = () => {
 
   const handleBack = (event) => {
     event.preventDefault();
+    setProgress((prevProgress) => prevProgress - 33.33);
     anime({
       targets: ".form-step",
       translateX: window.innerWidth,
@@ -71,11 +151,17 @@ const PurchaseForm = () => {
   const renderStep = () => {
     switch (step) {
       case 1:
-        return <ShippingInfo />;
+        return (
+          <ShippingInfo className="form-step" animate={{ translateX: 0 }} />
+        );
       case 2:
-        return <CreditCardInfo />;
+        return (
+          <CreditCardInfo className="form-step" animate={{ translateX: 0 }} />
+        );
       case 3:
-        return <Confirmation />;
+        return (
+          <Confirmation className="form-step" animate={{ translateX: 0 }} />
+        );
       default:
         return null;
     }
@@ -87,23 +173,24 @@ const PurchaseForm = () => {
         <Typography variant="h2" align="center">
           Purchase Form
         </Typography>
+        <ProgressContainer>
+          <ProgressBar progress={progress} ref={progressRef} />
+        </ProgressContainer>
       </FormHeader>
-      <FormBody>{renderStep()}</FormBody>
-      {/* <div style={{ marginRight: "2rem" }}>
-<Typography variant="h4">Preview of Items</Typography>
-<PreviewCart />
-</div> */}
-      <FormFooter>
+      <FormBody>
         {step > 1 && (
           <BackButton variant="outlined" onClick={handleBack}>
-            Back
+            <ArrowBackIos />
           </BackButton>
         )}
+        {renderStep()}
         {step < 3 && (
           <NextButton variant="contained" onClick={handleNext}>
-            Next
+            <ArrowForwardIos />
           </NextButton>
         )}
+      </FormBody>
+      <FormFooter>
         {step === 3 && (
           <SubmitButton variant="contained" onClick={handleNext}>
             Submit

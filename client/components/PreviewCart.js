@@ -64,3 +64,4 @@ function PreviewCart({ onEdit, onDelete }) {
     </div>
   );
 }
+export default PreviewCart;
