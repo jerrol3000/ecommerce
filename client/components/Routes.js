@@ -6,10 +6,9 @@ import { fetchCart } from "../store/checkoutSlice";
 import SingleProduct from "./SingleProduct";
 import { Login, Signup } from "./AuthForm";
 import Home from "./Home";
-import Checkout from "./Checkout";
 import Rating from "./Rating";
 import Reviews from "./Reviews";
-import PreviewCart from "./PreviewCart";
+import PurchaseForm from "./PurchaseForm";
 import AdminDashboard from "./AdminDasboard";
 
 const Routes = () => {
@@ -38,7 +37,7 @@ const Routes = () => {
             <Route path="/" element={<Home />} />
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/products/:productId" element={<SingleProduct />} />
-            <Route path="/checkout/:userId" element={<Checkout />} />
+            <Route path="/checkout/:userId" element={<PurchaseForm />} />
             <Route path="/review/:productId" element={<Reviews />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
@@ -50,7 +49,7 @@ const Routes = () => {
             <Route path="*" element={<Navigate to="/" replace />} />
             <Route path="/" element={<Home />} />
             <Route path="/products/:productId" element={<SingleProduct />} />
-            <Route path="/checkout/:userId" element={<Checkout />} />
+            <Route path="/checkout/:userId" element={<PurchaseForm />} />
             <Route path="/review/:productId" element={<Reviews />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
