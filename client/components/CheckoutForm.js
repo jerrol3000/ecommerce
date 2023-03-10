@@ -20,7 +20,7 @@ const FormContainer = styled(Container)({
   "@media (max-width: 600px)": {
     /* Adjust layout for small screens */
     "& .MuiTypography-h2": {
-      fontSize: "2rem",
+      fontSize: "0.5rem",
     },
     "& .MuiButton-root": {
       padding: "0.5rem",
@@ -29,10 +29,10 @@ const FormContainer = styled(Container)({
       fontSize: "0.8rem",
     },
   },
-  "@media (max-width: 400px)": {
+  "@media (max-width: 200px)": {
     /* Adjust layout for extra small screens */
     "& .MuiTypography-h2": {
-      fontSize: "1.5rem",
+      fontSize: "0.25rem",
     },
     "& .MuiButton-root": {
       padding: "0.3rem",
@@ -58,6 +58,12 @@ const FormFooter = styled("div")({
   display: "flex",
   justifyContent: "space-between",
   width: "100%",
+  "@media (max-width: 600px)": {
+    flexDirection: "column",
+    marginTop: "1rem",
+    padding: "0 1rem",
+    width: "90%",
+  },
 });
 
 const BackButton = styled(Button)({
@@ -66,7 +72,10 @@ const BackButton = styled(Button)({
   left: "1rem",
   transform: "translateY(-50%)",
   "@media (max-width: 600px)": {
-    left: "0.5rem",
+    flexDirection: "column",
+    marginTop: "20rem",
+    padding: "0 1rem",
+    width: "5%",
   },
 });
 
@@ -76,7 +85,10 @@ const NextButton = styled(Button)({
   right: "1rem",
   transform: "translateY(-50%)",
   "@media (max-width: 600px)": {
-    right: "0.5rem",
+    flexDirection: "column",
+    marginTop: "20rem",
+    padding: "0 1rem",
+    width: "5%",
   },
 });
 
@@ -98,6 +110,7 @@ const SubmitButton = styled(Button)({
 });
 
 const ProgressContainer = styled("div")({
+  marginTop: "1em",
   width: "100%",
   height: "6px",
   backgroundColor: "#ddd",
@@ -169,13 +182,13 @@ const PurchaseForm = () => {
 
   return (
     <FormContainer>
+      <ProgressContainer>
+        <ProgressBar progress={progress} ref={progressRef} />
+      </ProgressContainer>
       <FormHeader>
         <Typography variant="h2" align="center">
           Purchase Form
         </Typography>
-        <ProgressContainer>
-          <ProgressBar progress={progress} ref={progressRef} />
-        </ProgressContainer>
       </FormHeader>
       <FormBody>
         {step > 1 && (

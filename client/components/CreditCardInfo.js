@@ -16,7 +16,16 @@ const CreditCardInfo = ({ onPrev, onNext }) => {
   };
 
   return (
-    <Box sx={{ mx: "auto", maxWidth: 400 }}>
+    <Box
+      sx={{
+        maxWidth: 600,
+        mx: "auto",
+        p: 2,
+        "@media (max-width:600px)": {
+          marginBottom: "5em",
+        },
+      }}
+    >
       <h2>Step 2: Credit Card Information</h2>
       <Box
         component="form"
