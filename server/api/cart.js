@@ -57,6 +57,22 @@ router.post("/", upload.single("image"), async (req, res) => {
   }
 });
 
+router.delete("/:cartId", async (req, res, next) => {
+  const id = req.params.cartId;
+  try {
+    const itemToDelete = await Cart.findOne({
+      where: { id },
+    });
+    if (!itemToDelete) {
+      return res.status(404).send("Item not found in cart");
+    }
+    await itemToDelete.destroy();
+    res.send(itemToDelete);
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.get("/:id", async (req, res, next) => {
   const userId = req.params.id;
   try {

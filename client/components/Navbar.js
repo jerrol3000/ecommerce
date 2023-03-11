@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { logout } from "../store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { createTheme } from "@material-ui/core/styles";
+import { deleteFromCart } from "../store/checkoutSlice";
+import { fetchCart } from "../store/checkoutSlice";
 import {
   faHome,
   faSignOutAlt,
@@ -68,6 +70,11 @@ const Navbar = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const handleDelete = (cartId) => {
+    dispatch(deleteFromCart(cartId));
+  };
+
   const handleSave = (itemId, newName, newQuantity, newPrice) => {
     // Call your API to update the item's values here
     // Or update your state with the new values
@@ -219,7 +226,8 @@ const Navbar = () => {
                       <FontAwesomeIcon icon={faEdit} />
                     </IconButton>
                   )}
-                  <IconButton>
+
+                  <IconButton onClick={() => handleDelete(item.id)}>
                     <FontAwesomeIcon icon={faTrashAlt} />
                   </IconButton>
                 </div>

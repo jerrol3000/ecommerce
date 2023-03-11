@@ -13,12 +13,20 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import { deleteFromCart } from "../store/checkoutSlice";
 
-function PreviewCart({ onEdit, onDelete }) {
+function PreviewCart() {
   const dispatch = useDispatch();
   const { checkout } = useSelector((state) => state);
 
   const params = useParams();
+
+  const onDelete = (id) => {
+    dispatch(deleteFromCart(id));
+  };
+  const onEdit = () => {
+    //update
+  };
 
   useEffect(() => {
     dispatch(fetchCart(params.userId));
@@ -49,7 +57,7 @@ function PreviewCart({ onEdit, onDelete }) {
             </Typography>
           </CardContent>
           <CardActions sx={{ alignSelf: "flex-end" }}>
-            <IconButton onClick={onDelete}>
+            <IconButton onClick={() => onDelete(item.id)}>
               <DeleteIcon />
             </IconButton>
             <IconButton onClick={onEdit}>

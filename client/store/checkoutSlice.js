@@ -24,6 +24,18 @@ export const fetchCart = createAsyncThunk("products/fetchCart", async (id) => {
   }
 });
 
+export const deleteFromCart = createAsyncThunk(
+  "products/deleteFromCart",
+  async (cartId) => {
+    try {
+      const { data } = await axios.delete(`/api/checkout/${cartId}`);
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
 const initialState = [];
 
 const orderSlice = createSlice({
@@ -33,6 +45,10 @@ const orderSlice = createSlice({
   extraReducers: {
     [createOrder.fulfilled]: (state, action) => [action.payload, ...state],
     [fetchCart.fulfilled]: (state, action) => action.payload,
+    [deleteFromCart.fulfilled]: (state, action) => {
+      const deletedItemId = action.payload;
+      return state.filter((item) => item.id !== deletedItemId.id);
+    },
   },
 });
 
