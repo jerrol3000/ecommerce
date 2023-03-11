@@ -30,11 +30,8 @@ function PreviewCart({ onEdit, onDelete }) {
         <Card key={item.id} sx={{ display: "flex" }}>
           <CardMedia
             component="img"
-            sx={{ width: 150, height: 150, objectFit: "contain" }}
-            image={`${window.location.host}/${item.image
-              .split("/")
-              .splice(1)
-              .join("/")}`}
+            sx={{ width: 100, height: 100, objectFit: "contain" }}
+            image={`/${item.image.split("/").splice(1).join("/")}`}
             alt="item"
           />
           <CardContent sx={{ flexGrow: 1 }}>

@@ -182,6 +182,7 @@ const PurchaseForm = () => {
 
   return (
     <FormContainer>
+      <PreviewCart />
       <ProgressContainer>
         <ProgressBar progress={progress} ref={progressRef} />
       </ProgressContainer>
