@@ -69,7 +69,12 @@ const AuthForm = ({ formName, displayName, error }) => {
     evt.preventDefault();
     const email = evt.target.email.value.toLowerCase();
     const password = evt.target.password.value;
-    dispatch(authenticate({ email, password, formName }));
+    let firstName, lastName;
+    if (formName === "signup") {
+      firstName = evt.target.firstName.value;
+      lastName = evt.target.lastName.value;
+    }
+    dispatch(authenticate({ email, password, firstName, lastName, formName }));
   };
 
   return (
@@ -103,6 +108,26 @@ const AuthForm = ({ formName, displayName, error }) => {
                 type="password"
                 autoComplete="current-password"
               />
+              {formName === "signup" && (
+                <>
+                  <TextField
+                    variant="outlined"
+                    margin="normal"
+                    fullWidth
+                    label="First Name"
+                    name="firstName"
+                    autoComplete="given-name"
+                  />
+                  <TextField
+                    variant="outlined"
+                    margin="normal"
+                    fullWidth
+                    label="Last Name"
+                    name="lastName"
+                    autoComplete="family-name"
+                  />
+                </>
+              )}
               <Button
                 type="submit"
                 fullWidth
@@ -118,11 +143,17 @@ const AuthForm = ({ formName, displayName, error }) => {
                 </Typography>
               )}
             </form>
-            <Grid container justify="flex-end">
+            <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="#" variant="body2" onClick={handleOpen}>
-                  Forgot Password?
-                </Link>
+                {formName === "login" ? (
+                  <Link href="#" variant="body2" onClick={handleOpen}>
+                    Forgot Password?
+                  </Link>
+                ) : (
+                  <Link href="#" variant="body2" onClick={handleOpen}>
+                    Already have an account? Log in
+                  </Link>
+                )}
               </Grid>
             </Grid>
           </Paper>

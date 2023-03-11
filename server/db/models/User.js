@@ -22,9 +22,13 @@ const User = db.define("user", {
     type: Sequelize.BOOLEAN,
     defaultValue: false,
   },
-  username: {
+  firstName: {
     type: Sequelize.STRING,
-    allowNull: false,
+    // allowNull: false,
+  },
+  lastName: {
+    type: Sequelize.STRING,
+    // allowNull: false,
   },
 });
 

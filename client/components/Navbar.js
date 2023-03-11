@@ -127,9 +127,7 @@ const Navbar = () => {
           {isLoggedIn ? (
             <div style={{ display: "flex" }}>
               <Typography variant="h6" className={classes.title}>
-                Hi,{" "}
-                {auth.username.charAt(0).toUpperCase() +
-                  auth.username.split("").splice(1).join("")}
+                Hi, {auth.firstName}
               </Typography>
               <Button color="inherit" onClick={handleLogout}>
                 <FontAwesomeIcon
