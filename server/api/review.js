@@ -31,6 +31,7 @@ router.get("/:productId", async (req, res, next) => {
     const { productId } = req.params;
     const reviews = await Review.findAll({
       where: { productId },
+      include: [User],
     });
     res.status(201).json(reviews);
   } catch (error) {

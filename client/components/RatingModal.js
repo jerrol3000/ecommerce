@@ -68,7 +68,6 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(6),
   },
   comment: {
-    borderBottom: `1px solid ${theme.palette.grey[300]}`,
     paddingBottom: theme.spacing(2),
     marginBottom: theme.spacing(2),
   },
@@ -76,6 +75,28 @@ const useStyles = makeStyles((theme) => ({
     fontStyle: "italic",
     color: theme.palette.text.secondary,
     marginTop: theme.spacing(1),
+  },
+  commentAuthor: {
+    fontSize: theme.typography.subtitle2.fontSize,
+  },
+  commentTimestamp: {
+    fontSize: "0.7rem",
+    color: theme.palette.text.secondary,
+    marginBottom: "0.5rem",
+  },
+  dateAndTime: {
+    borderBottom: `1px solid ${theme.palette.grey[300]}`,
+    marginBottom: theme.spacing(3),
+  },
+  editButton: {
+    marginLeft: theme.spacing(1),
+    backgroundColor: theme.palette.grey[200],
+    border: "none",
+    borderRadius: "4px",
+    cursor: "pointer",
+    "&:hover": {
+      backgroundColor: theme.palette.grey[300],
+    },
   },
 }));
 
@@ -217,29 +238,46 @@ const ModalWithRating = ({ productId, averageRating }) => {
             </Button>
             <div className={classes.commentsBox}>
               {reviewsById.length ? (
-                reviewsById.map(({ title, body, rating, id, userId }) => {
-                  return (
-                    <div key={id}>
-                      <span>
-                        {Array(rating)
-                          .fill(<FontAwesomeIcon icon={faStar} />)
-                          .concat(
-                            Array(5 - rating).fill(
-                              <FontAwesomeIcon icon={farStar} />
+                reviewsById.map(
+                  ({ title, body, rating, id, userId, createdAt, user }) => {
+                    return (
+                      <div key={id}>
+                        <span>
+                          {Array(rating)
+                            .fill(<FontAwesomeIcon icon={faStar} />)
+                            .concat(
+                              Array(5 - rating).fill(
+                                <FontAwesomeIcon icon={farStar} />
+                              )
                             )
-                          )
-                          .map((star, index) => (
-                            <span key={index}>{star}</span>
-                          ))}
-                      </span>
-                      <h3 className={classes.reviewHeader}>{title}</h3>
-                      <p className={classes.comment}>{body}</p>
-                      {userId === currentUser && (
-                        <button onClick={() => handleEdit(id)}>Edit</button>
-                      )}
-                    </div>
-                  );
-                })
+                            .map((star, index) => (
+                              <span key={index}>{star}</span>
+                            ))}
+                        </span>
+                        <h3 className={classes.reviewHeader}>{title}</h3>
+                        <p className={classes.comment}>{body}</p>
+                        <div className={classes.dateAndTime}>
+                          <span className={classes.commentAuthor}>
+                            {" "}
+                            by {user.firstName}
+                          </span>
+                          <span className={classes.commentTimestamp}>
+                            {" "}
+                            on {createdAt}
+                          </span>
+                          {userId === currentUser && (
+                            <button
+                              className={classes.editButton}
+                              onClick={() => handleEdit(id)}
+                            >
+                              edit
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  }
+                )
               ) : (
                 <p className={classes.noComments}>
                   This Product has not been reviewed yet, be the first to review
