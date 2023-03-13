@@ -18,15 +18,16 @@ const theme = createTheme();
 const useStyles = makeStyles((theme) => ({
   paper: {
     position: "absolute",
-    width: 370,
+    width: "70%",
     top: "51%",
     left: "50%",
     transform: "translate(-50%, -50%)",
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
-    [theme.breakpoints.down("xs")]: {
-      width: "90%",
+    [theme.breakpoints.up("sm")]: {
+      width: "auto",
+      maxWidth: "400px",
     },
   },
   closeButton: {
@@ -87,6 +88,7 @@ const useStyles = makeStyles((theme) => ({
   dateAndTime: {
     borderBottom: `1px solid ${theme.palette.grey[300]}`,
     marginBottom: theme.spacing(3),
+    fontSize: "0.7rem",
   },
   editButton: {
     marginLeft: theme.spacing(1),
