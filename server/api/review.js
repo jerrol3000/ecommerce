@@ -69,7 +69,6 @@ router.put("/:productId", requireToken, async (req, res, next) => {
       { title, body, rating },
       { where: { productId, userId } }
     );
-    console.log({ title, body, rating });
     res.json(review);
   } catch (error) {
     next(error);

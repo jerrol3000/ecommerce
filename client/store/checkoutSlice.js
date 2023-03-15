@@ -36,6 +36,22 @@ export const deleteFromCart = createAsyncThunk(
   }
 );
 
+export const updateCart = createAsyncThunk(
+  "products/updateCart",
+  async ({ cartId, size, quantity }, thunkAPI) => {
+    try {
+      const { data } = await axios.put(`/api/checkout/${cartId}`, {
+        size,
+        quantity,
+      });
+      return data;
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+);
+
 const initialState = [];
 
 const orderSlice = createSlice({
@@ -45,6 +61,12 @@ const orderSlice = createSlice({
   extraReducers: {
     [createOrder.fulfilled]: (state, action) => [action.payload, ...state],
     [fetchCart.fulfilled]: (state, action) => action.payload,
+    [updateCart.fulfilled]: (state, action) => {
+      const updatedItem = action.payload;
+      return state.map((item) =>
+        item.id === updatedItem.id ? updatedItem : item
+      );
+    },
     [deleteFromCart.fulfilled]: (state, action) => {
       const deletedItemId = action.payload;
       return state.filter((item) => item.id !== deletedItemId.id);

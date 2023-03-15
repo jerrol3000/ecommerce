@@ -73,6 +73,18 @@ router.delete("/:cartId", async (req, res, next) => {
   }
 });
 
+router.put("/:cartId", async (req, res, next) => {
+  const id = req.params.cartId;
+  const { size, quantity } = req.body;
+  try {
+    await Cart.update({ size, quantity }, { where: { id } });
+    const updatedItem = await Cart.findByPk(id);
+    res.json(updatedItem);
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.get("/:id", async (req, res, next) => {
   const userId = req.params.id;
   try {

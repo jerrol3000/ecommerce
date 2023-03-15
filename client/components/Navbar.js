@@ -4,8 +4,7 @@ import { Link } from "react-router-dom";
 import { logout } from "../store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { createTheme } from "@material-ui/core/styles";
-import { deleteFromCart } from "../store/checkoutSlice";
-import { fetchCart } from "../store/checkoutSlice";
+import { deleteFromCart, updateCart, fetchCart } from "../store/checkoutSlice";
 import {
   faHome,
   faSignOutAlt,
@@ -56,8 +55,17 @@ const Navbar = () => {
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [editingItemId, setEditingItemId] = useState(null);
+  const [quantity, setQuantity] = useState(0);
+  const [size, setSize] = useState("");
 
   const { checkout } = useSelector((state) => state);
+  useEffect(() => {
+    if (editingItemId !== null) {
+      const currentItem = checkout.find((item) => item.id === editingItemId);
+      setQuantity(currentItem.quantity);
+      setSize(currentItem.size);
+    }
+  }, [editingItemId, checkout]);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -74,12 +82,18 @@ const Navbar = () => {
   const handleDelete = (cartId) => {
     dispatch(deleteFromCart(cartId));
   };
+  const handleQuantity = (e) => {
+    setQuantity(parseInt(e.target.value));
+  };
+  const handleSize = (e) => {
+    setSize(e.target.value);
+  };
 
-  const handleSave = (itemId, newName, newQuantity, newPrice) => {
-    // Call your API to update the item's values here
-    // Or update your state with the new values
-
+  const handleSave = async () => {
+    dispatch(updateCart({ cartId: editingItemId, size, quantity }));
     setEditingItemId(null); // Reset the editingItemId to exit edit mode
+    setQuantity(0);
+    setSize("");
   };
   return (
     <div className={classes.root}>
@@ -164,8 +178,8 @@ const Navbar = () => {
         onClose={handleClose}
       >
         {checkout.length ? (
-          checkout.map((item) => (
-            <MenuItem key={item.id}>
+          checkout.map((item, i) => (
+            <MenuItem key={i}>
               <div
                 style={{
                   display: "flex",
@@ -179,7 +193,8 @@ const Navbar = () => {
                       <Typography variant="subtitle1">Quantity</Typography>
                       <input
                         type="number"
-                        defaultValue={item.quantity}
+                        value={quantity}
+                        onChange={handleQuantity}
                         style={{
                           border: "none",
                           borderBottom: "1px solid gray",
@@ -193,7 +208,8 @@ const Navbar = () => {
                       <Typography variant="subtitle1">Size</Typography>
                       <input
                         type="text"
-                        defaultValue={item.size}
+                        onChange={handleSize}
+                        value={size}
                         style={{
                           border: "none",
                           borderBottom: "1px solid gray",
@@ -216,7 +232,7 @@ const Navbar = () => {
 
                 <div>
                   {editingItemId === item.id ? (
-                    <IconButton>
+                    <IconButton onClick={handleSave}>
                       <FontAwesomeIcon icon={faSave} />
                     </IconButton>
                   ) : (

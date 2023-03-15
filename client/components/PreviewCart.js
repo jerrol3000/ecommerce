@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { fetchCart } from "../store/checkoutSlice";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -13,7 +12,7 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import { deleteFromCart } from "../store/checkoutSlice";
+import { deleteFromCart, fetchCart, updateCart } from "../store/checkoutSlice";
 
 function PreviewCart() {
   const dispatch = useDispatch();
@@ -25,7 +24,7 @@ function PreviewCart() {
     dispatch(deleteFromCart(id));
   };
   const onEdit = () => {
-    //update
+    // dispatch(updateCart({ cartId: editingItemId, size, quantity }));
   };
 
   useEffect(() => {

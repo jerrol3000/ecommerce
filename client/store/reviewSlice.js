@@ -65,10 +65,11 @@ const initialState = {
   reviewsById: [],
   allReviews: [],
   postReview: [],
+  averageRating: null,
 };
 
 const reviewtSlice = createSlice({
-  name: "products",
+  name: "reviews",
   initialState,
   reducers: {},
   extraReducers: {
