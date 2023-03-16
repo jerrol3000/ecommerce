@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./css/purchaseForm.css";
 import { createOrder, fetchCart } from "../store/checkoutSlice";
+import { useNavigate } from "react-router-dom";
 
 const PurchaseForm = () => {
   const [size, setSize] = useState(null);
@@ -12,6 +13,7 @@ const PurchaseForm = () => {
   const [showCustomInputSize, setShowCustomInputSize] = useState(false);
   const [customInputQuantity, setCustomInputQuantity] = useState(false);
 
+  let navigate = useNavigate();
   const dispatch = useDispatch();
 
   const user = useSelector((state) => state.auth);
@@ -81,6 +83,7 @@ const PurchaseForm = () => {
         })();
       };
     }
+    navigate("/home");
   };
 
   return (
@@ -194,7 +197,7 @@ const PurchaseForm = () => {
             onChange={handleCustomQuantityChange}
           />
         )}
-        <div>
+        <div className="button-container">
           <button className="submit-button" type="submit">
             Continue
           </button>
