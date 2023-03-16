@@ -1,18 +1,75 @@
-import React from "react";
+import React, { useRef } from "react";
 import { NavLink } from "react-router-dom";
+import anime from "animejs/lib/anime.es.js"; // import animejs library
+import { makeStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
 import "./css/product.css";
 
+const useStyles = makeStyles((theme) => ({
+  card: {
+    "&:hover": {
+      transform: "scale(1.02)",
+      opacity: 0.9,
+    },
+  },
+  title: {
+    fontWeight: "bold",
+    marginBottom: theme.spacing(2),
+  },
+  price: {
+    fontWeight: "bold",
+    fontSize: "1.2rem",
+    "& span": {
+      fontSize: "0.8em",
+    },
+  },
+  description: {
+    color: theme.palette.text.secondary,
+  },
+}));
+
 function Product({ name, image, price, description, id }) {
+  const cardRef = useRef(null); // create a reference to the card element
+  const classes = useStyles();
+
+  // add event listeners to the card's parent element
+  const handleMouseEnter = () => {
+    anime({
+      targets: cardRef.current,
+      scale: 1.02,
+      opacity: 0.9,
+      duration: 300,
+    });
+  };
+
+  const handleMouseLeave = () => {
+    anime({
+      targets: cardRef.current,
+      scale: 1,
+      opacity: 1,
+      duration: 300,
+    });
+  };
+
   return (
-    <div>
-      <div className="product-card">
-        <h2 className="product-title">{name}</h2>
-        <NavLink to={`/products/${id}`} className="product-image">
-          <img src={image} />
-        </NavLink>
-        <p className="product-price">${price} per unit</p>
-        <p className="product-description">{description}</p>
-      </div>
+    <div
+      className={`${classes.card} product-card`}
+      ref={cardRef}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      <Typography variant="h5" className={classes.title}>
+        {name}
+      </Typography>
+      <NavLink to={`/products/${id}`} className="product-image">
+        <img src={image} alt={name} />
+      </NavLink>
+      <Typography variant="h6" className={classes.price}>
+        <span>${price}</span> per unit
+      </Typography>
+      <Typography variant="body1" className={classes.description}>
+        {description}
+      </Typography>
     </div>
   );
 }

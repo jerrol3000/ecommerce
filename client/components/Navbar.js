@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { logout } from "../store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { createTheme } from "@material-ui/core/styles";
-import { deleteFromCart, updateCart, fetchCart } from "../store/checkoutSlice";
+import { deleteFromCart, updateCart } from "../store/checkoutSlice";
 import {
   faHome,
   faSignOutAlt,

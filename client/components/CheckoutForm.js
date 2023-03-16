@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import anime from "animejs";
 import { styled } from "@mui/material/styles";
-
+import { fetchCart } from "../store/checkoutSlice";
+import { Dispatch } from "react";
 import { Button, Container, Typography } from "@mui/material";
 import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
@@ -9,6 +10,7 @@ import ShippingInfo from "./ShippingInfo";
 import CreditCardInfo from "./CreditCardInfo";
 import Confirmation from "./Confirmation";
 import PreviewCart from "./PreviewCart";
+import { useDispatch, useSelector } from "react-redux";
 
 const FormContainer = styled(Container)({
   display: "flex",
@@ -128,7 +130,12 @@ const PurchaseForm = () => {
   const [progress, setProgress] = useState(0);
   const progressRef = useRef(null);
 
+  const { id } = useSelector((state) => state.auth);
+  const { checkout } = useSelector((state) => state);
+  const dispatch = useDispatch();
+
   useEffect(() => {
+    dispatch(fetchCart(id));
     anime({
       targets: progressRef.current,
       width: `${progress}%`,
@@ -192,20 +199,20 @@ const PurchaseForm = () => {
         </Typography>
       </FormHeader>
       <FormBody>
-        {step > 1 && (
+        {step > 1 && checkout.length && (
           <BackButton variant="outlined" onClick={handleBack}>
-            <ArrowBackIos />
+            {<ArrowBackIos /> || ""}
           </BackButton>
         )}
         {renderStep()}
-        {step < 3 && (
+        {step < 3 && checkout.length && (
           <NextButton variant="contained" onClick={handleNext}>
-            <ArrowForwardIos />
+            {<ArrowForwardIos /> || ""}
           </NextButton>
         )}
       </FormBody>
       <FormFooter>
-        {step === 3 && (
+        {step === 3 && checkout.length && (
           <SubmitButton variant="contained" onClick={handleNext}>
             Submit
           </SubmitButton>
