@@ -11,11 +11,12 @@ import Reviews from "./Reviews";
 import PurchaseForm from "./PurchaseForm";
 import AdminDashboard from "./AdminDasboard";
 import CheckoutForm from "./CheckoutForm";
+import LandingPage from "./Landingpage";
+import LearnMore from "./LeranMore";
 
 const Routes = () => {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
-  const isLoggedIn = !!auth.id;
   const userId = auth.id;
 
   useEffect(() => {
@@ -42,18 +43,22 @@ const Routes = () => {
             <Route path="/review/:productId" element={<Reviews />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/learnmore" element={<LearnMore />} />
             <Route path="/" element={<Login />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </>
         ) : (
           <>
             <Route path="*" element={<Navigate to="/" replace />} />
-            <Route path="/" element={<Home />} />
+            <Route path="/home" element={<Home />} />
             <Route path="/products/:productId" element={<SingleProduct />} />
             <Route path="/checkout/:userId" element={<CheckoutForm />} />
             <Route path="/review/:productId" element={<Reviews />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/learnmore" element={<LearnMore />} />
             <Route path="/" element={<Login />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </>
