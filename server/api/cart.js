@@ -95,7 +95,10 @@ router.get("/:id", async (req, res, next) => {
         through: CartItem,
       },
     });
-
+    const grandTotal = cart.reduce(
+      (total, cartItem) => total + cartItem.totalPrice,
+      0
+    );
     res.send(cart);
   } catch (error) {
     next(error);

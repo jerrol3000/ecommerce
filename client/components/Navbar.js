@@ -225,7 +225,7 @@ const Navbar = () => {
                       {item.name} ({item.size})
                     </Typography>
                     <Typography variant="body2" color="textSecondary">
-                      quantity: {item.quantity} price: ${item.price} USD
+                      quantity: {item.quantity} price: ${item.totalPrice} USD
                     </Typography>
                   </div>
                 )}

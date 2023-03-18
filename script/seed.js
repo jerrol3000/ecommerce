@@ -17,7 +17,7 @@ const products = [
     image:
       "https://content.goldimageprinting.com/gallery/63/3a26190f-6c9d-4228-adcd-a2b4bd77829b.jpg",
     description:
-      "Custom oval roll labels are a fast and easy way to brand your product. Apply to bottles, jars, boxes, packaging and more. Made from a durable material with a laminate that resists scratching, heat, water and sunlight.",
+      "Custom oval roll labels are a fast and easy way to brand your product. These labels can be applied to bottles, jars, boxes, packaging, and more. The material used for the labels is durable and has a laminate that resists scratching, heat, water, and sunlight.",
   },
   {
     name: "Clear roll labels",
@@ -25,7 +25,7 @@ const products = [
       "https://d3ccuprjuqkp1j.cloudfront.net/ProductLandingPages/FeaturedImages/ClearPolyRollLabels_2_720x720_20200508153355_0.jpg",
     price: 0.05,
     description:
-      "Custom clear labels are perfect for bottles, jars and product packaging. Our clear labels are made from a crystal clear, premium material that's resistant to food, oil, water & refrigeration.",
+      "Custom clear labels are perfect for bottles, jars, and product packaging. These labels are made from a crystal clear, premium material that is resistant to food, oil, water, and refrigeration.",
   },
   {
     name: "Circle labels",
@@ -33,7 +33,7 @@ const products = [
       "https://storage.googleapis.com/sm-content/core/products/products/CRL/cover2x",
     price: 0.5,
     description:
-      "Get multiple circle labels on a sheet to easily brand your products and packaging. Perfect for applying by hand, your sheet labels will be printed on a durable 8.5” x 11” material that stands up to food, oil, water and refrigeration.",
+      "Get multiple circle labels on a sheet to easily brand your products and packaging. These labels are perfect for applying by hand and are printed on a durable 8.5” x 11” material that stands up to food, oil, water, and refrigeration.",
   },
   {
     name: "Rounded corner labels",
@@ -41,7 +41,7 @@ const products = [
       "https://www.imprintitems.com/userfiles/files/asi-media/45634128.jpg",
     price: 0.07,
     description:
-      "Custom rounded corner roll labels are a fast and easy way to brand your product. Apply to bottles, jars, boxes, packaging and more. Made from a durable material with a laminate that resists scratching, heat, water and sunlight.",
+      "Custom rounded corner roll labels are a fast and easy way to brand your product. These labels can be applied to bottles, jars, boxes, packaging, and more. The material used for the labels is durable and has a laminate that resists scratching, heat, water, and sunlight.",
   },
   {
     name: "Die cut sheet labels",
@@ -49,7 +49,7 @@ const products = [
       "https://staticecp.uprinting.com/5866/530x530/UP_Die_Cut_Label_Promotional_Material_Product_Image.jpg",
     price: 0.1,
     description:
-      "Get multiple die cut labels on a sheet to easily brand your products and packaging. Perfect for applying by hand, your sheet labels will be printed on a durable 8.5” x 11” material that stands up to food, oil, water and refrigeration.",
+      "Get multiple die cut labels on a sheet to easily brand your products and packaging. These labels are perfect for applying by hand and are printed on a durable 8.5” x 11” material that stands up to food, oil, water, and refrigeration.",
   },
   {
     name: "Square label sheet",
@@ -57,7 +57,7 @@ const products = [
       "https://b8a0cbeb1272df9990a4-6992e6a951f94c4e2e48d3930f87f0fd.ssl.cf1.rackcdn.com/square-labels-sheet-compressor.jpg",
     price: 0.07,
     description:
-      "Get multiple square labels on a sheet to easily brand your products and packaging. Perfect for applying by hand, your sheet labels will be printed on a durable 8.5” x 11” material that stands up to food, oil, water and refrigeration.",
+      "Get multiple square labels on a sheet to easily brand your products and packaging. These labels are perfect for applying by hand and are printed on a durable 8.5” x 11” material that stands up to food, oil, water, and refrigeration.",
   },
 ];
 

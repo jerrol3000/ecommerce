@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 const PurchaseForm = () => {
   const [size, setSize] = useState(null);
   const [customSize, setCustomSize] = useState("");
-  const [customQuantity, setCustomQuantity] = useState("");
+  const [customQuantity, setCustomQuantity] = useState(100);
   const [quantity, setQuantity] = useState(0);
   const [file, setFile] = useState(null);
   const [showCustomInputSize, setShowCustomInputSize] = useState(false);
@@ -32,7 +32,7 @@ const PurchaseForm = () => {
   };
 
   const handleCustomQuantityChange = (event) => {
-    setCustomQuantity(event.target.value);
+    setCustomQuantity(Number(event.target.value));
   };
 
   const handleQuantityChange = (event) => {
@@ -51,9 +51,9 @@ const PurchaseForm = () => {
   const orderDetail = {
     name,
     image: file,
-    price: quantity * price,
-    size: size,
-    quantity: quantity,
+    price,
+    size,
+    quantity,
     userId: user.id,
     productId: id,
   };
@@ -74,9 +74,9 @@ const PurchaseForm = () => {
             JSON.stringify({
               name,
               image: reader.result,
-              price: quantity * price,
-              size: size,
-              quantity: quantity,
+              price,
+              size,
+              quantity,
               productId: id,
             })
           );
@@ -102,7 +102,12 @@ const PurchaseForm = () => {
             />
             <p>Size: {size}</p>
             <p>Quantity: {quantity}</p>
-            <p>Your total is: {quantity * price}</p>
+            <p>
+              Your total is:{" "}
+              {customQuantity > 0
+                ? Math.round(customQuantity * price)
+                : quantity * price}
+            </p>
           </div>
         )}
         <h2>Select Size</h2>
@@ -191,9 +196,9 @@ const PurchaseForm = () => {
         {customInputQuantity && (
           <input
             placeholder="Enter quantity"
-            type="text"
+            type="number"
             name="custom-size"
-            value={customQuantity}
+            value={Number(customQuantity)}
             onChange={handleCustomQuantityChange}
           />
         )}

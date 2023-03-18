@@ -26,4 +26,10 @@ module.exports = db.define("cart", {
   quantity: {
     type: Sequelize.INTEGER,
   },
+  totalPrice: {
+    type: Sequelize.VIRTUAL,
+    get() {
+      return this.getDataValue("price") * this.getDataValue("quantity");
+    },
+  },
 });

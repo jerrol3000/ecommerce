@@ -67,6 +67,18 @@ const FormFooter = styled("div")({
     width: "90%",
   },
 });
+const Preview = styled("div")({
+  marginTop: "2rem",
+  display: "flex",
+  justifyContent: "space-between",
+  width: "100%",
+  "@media (max-width: 600px)": {
+    flexDirection: "columnReverse",
+    marginTop: "1rem",
+    padding: "0 1rem",
+    width: "90%",
+  },
+});
 
 const BackButton = styled(Button)({
   position: "absolute",
@@ -186,10 +198,17 @@ const PurchaseForm = () => {
         return null;
     }
   };
+  const grandTotal = checkout.reduce((prev, curr) => prev + curr.totalPrice, 0);
 
   return (
     <FormContainer>
-      <PreviewCart />
+      <Preview>
+        <PreviewCart />
+        <Typography variant="h4" align="center">
+          Total Price : ${grandTotal}
+        </Typography>
+      </Preview>
+
       <ProgressContainer>
         <ProgressBar progress={progress} ref={progressRef} />
       </ProgressContainer>
