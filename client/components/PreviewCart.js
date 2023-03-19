@@ -19,13 +19,16 @@ import { deleteFromCart, fetchCart, updateCart } from "../store/checkoutSlice";
 function PreviewCart() {
   const dispatch = useDispatch();
   const { checkout } = useSelector((state) => state);
+  const isLoggedIn = useSelector((state) => state.auth.id);
 
   const params = useParams();
 
   const [editingItemId, setEditingItemId] = useState(null);
   const [size, setSize] = useState("");
   const [quantity, setQuantity] = useState("");
+  const [guestCart, setGuestCart] = useState(null);
 
+  const cart = isLoggedIn ? checkout : guestCart ? guestCart : [];
   const onDelete = (id) => {
     dispatch(deleteFromCart(id));
   };
@@ -37,14 +40,18 @@ function PreviewCart() {
     setQuantity("");
   };
 
+  const currentCart = localStorage.getItem("cart");
   useEffect(() => {
     dispatch(fetchCart(params.userId));
+    if (currentCart) {
+      setGuestCart(JSON.parse(currentCart));
+    }
   }, []);
 
   return (
     <div>
-      {checkout.map((item) => (
-        <Card key={item.id} sx={{ display: "flex", alignItems: "center" }}>
+      {cart.map((item, i) => (
+        <Card key={item.id || i} sx={{ display: "flex", alignItems: "center" }}>
           <CardMedia
             component="img"
             sx={{ width: 100, height: 100, objectFit: "contain" }}

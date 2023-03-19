@@ -57,7 +57,9 @@ const Navbar = () => {
   const [editingItemId, setEditingItemId] = useState(null);
   const [quantity, setQuantity] = useState(0);
   const [size, setSize] = useState("");
+  const [guestCart, setGuestCart] = useState(null);
 
+  const currentCart = localStorage.getItem("cart");
   const { checkout } = useSelector((state) => state);
   useEffect(() => {
     if (editingItemId !== null) {
@@ -65,7 +67,12 @@ const Navbar = () => {
       setQuantity(currentItem.quantity);
       setSize(currentItem.size);
     }
-  }, [editingItemId, checkout]);
+    if (currentCart) {
+      setGuestCart(JSON.parse(currentCart));
+    }
+  }, [editingItemId, checkout, currentCart]);
+
+  const cart = isLoggedIn ? checkout : guestCart ? guestCart : [];
 
   const handleLogout = () => {
     dispatch(logout());
@@ -109,7 +116,7 @@ const Navbar = () => {
           >
             <Badge
               overlap="rectangular"
-              badgeContent={checkout.length}
+              badgeContent={cart.length}
               color="secondary"
             >
               {" "}
@@ -177,8 +184,8 @@ const Navbar = () => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        {checkout.length ? (
-          checkout.map((item, i) => (
+        {cart.length ? (
+          cart.map((item, i) => (
             <MenuItem key={i}>
               <div
                 style={{
@@ -252,7 +259,7 @@ const Navbar = () => {
           <MenuItem>Cart is empty</MenuItem>
         )}
         <MenuItem onClick={handleClose} style={{ justifyContent: "center" }}>
-          {checkout.length && (
+          {cart.length && (
             <Button
               variant="contained"
               color="primary"

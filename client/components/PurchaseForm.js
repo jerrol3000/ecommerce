@@ -69,17 +69,25 @@ const PurchaseForm = () => {
       reader.readAsDataURL(file);
       reader.onload = () => {
         reader.onload = (() => {
-          localStorage.setItem(
-            "order",
-            JSON.stringify({
-              name,
-              image: reader.result,
-              price,
-              size,
-              quantity,
-              productId: id,
-            })
-          );
+          const data = {
+            id: 0,
+            name,
+            image: reader.result,
+            price,
+            size,
+            quantity,
+            productId: id,
+          };
+          const currentCart = localStorage.getItem("cart");
+          if (currentCart) {
+            const guestCart = JSON.parse(currentCart);
+            guestCart.push(data);
+            localStorage.setItem("cart", JSON.stringify(guestCart));
+          } else {
+            const guestCart = [];
+            guestCart.push(data);
+            localStorage.setItem("cart", JSON.stringify(guestCart));
+          }
         })();
       };
     }
