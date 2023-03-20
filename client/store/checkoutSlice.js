@@ -57,7 +57,18 @@ const initialState = [];
 const orderSlice = createSlice({
   name: "order",
   initialState,
-  reducers: {},
+  reducers: {
+    deleteFromLocalCart: (state, action) => {
+      return state.filter((item) => item.productId !== action.payload);
+    },
+    updateLocalCart: (state, action) => {
+      const { cartId, size, quantity } = action.payload;
+      return state.map((item) =>
+        item.productId === cartId ? { ...item, size, quantity } : item
+      );
+    },
+    clearCart: () => [],
+  },
   extraReducers: {
     [createOrder.fulfilled]: (state, action) => [action.payload, ...state],
     [fetchCart.fulfilled]: (state, action) => action.payload,

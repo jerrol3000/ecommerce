@@ -65,7 +65,6 @@ const Navbar = () => {
   const { checkout } = useSelector((state) => state);
 
   const cart = isLoggedIn ? checkout : guestCart ? guestCart : [];
-
   useEffect(() => {
     if (editingItemId !== null) {
       const currentItem = cart.find((item) => item.id === editingItemId);
