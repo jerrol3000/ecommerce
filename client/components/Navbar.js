@@ -57,13 +57,18 @@ const Navbar = () => {
   const [editingItemId, setEditingItemId] = useState(null);
   const [quantity, setQuantity] = useState(0);
   const [size, setSize] = useState("");
-  const [guestCart, setGuestCart] = useState(null);
+  const [guestCart, setGuestCart] = useState(
+    JSON.parse(localStorage.getItem("cart")) || []
+  );
 
   const currentCart = localStorage.getItem("cart");
   const { checkout } = useSelector((state) => state);
+
+  const cart = isLoggedIn ? checkout : guestCart ? guestCart : [];
+
   useEffect(() => {
     if (editingItemId !== null) {
-      const currentItem = checkout.find((item) => item.id === editingItemId);
+      const currentItem = cart.find((item) => item.id === editingItemId);
       setQuantity(currentItem.quantity);
       setSize(currentItem.size);
     }
@@ -71,8 +76,6 @@ const Navbar = () => {
       setGuestCart(JSON.parse(currentCart));
     }
   }, [editingItemId, checkout, currentCart]);
-
-  const cart = isLoggedIn ? checkout : guestCart ? guestCart : [];
 
   const handleLogout = () => {
     dispatch(logout());
@@ -87,8 +90,15 @@ const Navbar = () => {
   };
 
   const handleDelete = (cartId) => {
-    dispatch(deleteFromCart(cartId));
+    if (isLoggedIn) {
+      dispatch(deleteFromCart(cartId));
+    } else {
+      const newCart = guestCart.filter((item) => item.productId !== cartId);
+      setGuestCart(newCart);
+      localStorage.setItem("cart", JSON.stringify(newCart));
+    }
   };
+
   const handleQuantity = (e) => {
     setQuantity(parseInt(e.target.value));
   };
@@ -97,11 +107,20 @@ const Navbar = () => {
   };
 
   const handleSave = async () => {
-    dispatch(updateCart({ cartId: editingItemId, size, quantity }));
-    setEditingItemId(null); // Reset the editingItemId to exit edit mode
+    if (isLoggedIn) {
+      dispatch(updateCart({ cartId: editingItemId, size, quantity }));
+    } else {
+      const updatedCart = guestCart.map((item) =>
+        item.productId === editingItemId ? { ...item, size, quantity } : item
+      );
+      setGuestCart(updatedCart);
+      localStorage.setItem("cart", JSON.stringify(updatedCart));
+    }
+    setEditingItemId(null);
     setQuantity(0);
     setSize("");
   };
+
   return (
     <div className={classes.root}>
       <AppBar position="static" color="primary">

@@ -70,7 +70,7 @@ const PurchaseForm = () => {
       reader.onload = () => {
         reader.onload = (() => {
           const data = {
-            id: 0,
+            id,
             name,
             image: reader.result,
             price,

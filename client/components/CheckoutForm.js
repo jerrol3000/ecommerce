@@ -210,7 +210,7 @@ const PurchaseForm = () => {
       <Preview>
         <PreviewCart />
         <Typography variant="h4" align="center">
-          Total Price : ${grandTotal || 0}
+          Total Price : ${grandTotal}
         </Typography>
       </Preview>
 

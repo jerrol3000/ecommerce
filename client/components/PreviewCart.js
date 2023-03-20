@@ -26,27 +26,42 @@ function PreviewCart() {
   const [editingItemId, setEditingItemId] = useState(null);
   const [size, setSize] = useState("");
   const [quantity, setQuantity] = useState("");
-  const [guestCart, setGuestCart] = useState(null);
+  const [guestCart, setGuestCart] = useState(
+    JSON.parse(localStorage.getItem("cart")) || []
+  );
 
   const cart = isLoggedIn ? checkout : guestCart ? guestCart : [];
+
   const onDelete = (id) => {
-    dispatch(deleteFromCart(id));
+    if (isLoggedIn) {
+      dispatch(deleteFromCart(id));
+    } else {
+      const newCart = guestCart.filter((item) => item.productId !== id);
+      setGuestCart(newCart);
+      localStorage.setItem("cart", JSON.stringify(newCart));
+    }
   };
 
   const onSave = () => {
-    dispatch(updateCart({ cartId: editingItemId, size, quantity }));
+    if (isLoggedIn) {
+      dispatch(updateCart({ cartId: editingItemId, size, quantity }));
+    } else {
+      const updatedCart = guestCart.map((item) =>
+        item.productId === editingItemId ? { ...item, size, quantity } : item
+      );
+      setGuestCart(updatedCart);
+      localStorage.setItem("cart", JSON.stringify(updatedCart));
+    }
     setEditingItemId(null);
+    setQuantity(0);
     setSize("");
-    setQuantity("");
   };
 
   const currentCart = localStorage.getItem("cart");
   useEffect(() => {
-    dispatch(fetchCart(params.userId));
-    if (currentCart) {
-      setGuestCart(JSON.parse(currentCart));
-    }
-  }, []);
+    if (isLoggedIn) dispatch(fetchCart(params.userId));
+    if (currentCart) setGuestCart(JSON.parse(currentCart));
+  }, [currentCart]);
 
   return (
     <div>
