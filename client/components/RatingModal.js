@@ -219,6 +219,7 @@ const ModalWithRating = ({ productId, averageRating }) => {
               className={classes.textField}
               value={editReview ? editReview.title : title}
               onChange={handleTitleChange}
+              disabled={currentUser ? false : true}
             />
             <TextField
               id="outlined-multiline-flexible"
@@ -229,12 +230,14 @@ const ModalWithRating = ({ productId, averageRating }) => {
               className={classes.textField}
               value={editReview ? editReview.body : body}
               onChange={handleCommentChange}
+              disabled={currentUser ? false : true}
             />
             <Button
               variant="contained"
               color="primary"
               className={classes.submitButton}
               onClick={editReview ? handleEditSubmit : handleSubmit}
+              disabled={currentUser ? false : true}
             >
               Submit
             </Button>
@@ -282,8 +285,14 @@ const ModalWithRating = ({ productId, averageRating }) => {
                 )
               ) : (
                 <p className={classes.noComments}>
-                  This Product has not been reviewed yet, be the first to review
-                  it
+                  {currentUser ? (
+                    <span>
+                      This product has not been reviewed yet, be the first to
+                      review it
+                    </span>
+                  ) : (
+                    <span>Please login to leave a review</span>
+                  )}
                 </p>
               )}
             </div>
