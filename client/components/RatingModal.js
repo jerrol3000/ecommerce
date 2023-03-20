@@ -223,7 +223,11 @@ const ModalWithRating = ({ productId, averageRating }) => {
             />
             <TextField
               id="outlined-multiline-flexible"
-              label="Enter your comment"
+              label={
+                currentUser
+                  ? "Enter your review"
+                  : "Please login to leave review"
+              }
               multiline
               minRows={4}
               variant="outlined"
@@ -285,14 +289,8 @@ const ModalWithRating = ({ productId, averageRating }) => {
                 )
               ) : (
                 <p className={classes.noComments}>
-                  {currentUser ? (
-                    <span>
-                      This product has not been reviewed yet, be the first to
-                      review it
-                    </span>
-                  ) : (
-                    <span>Please login to leave a review</span>
-                  )}
+                  This Product has not been reviewed yet, be the first to review
+                  it
                 </p>
               )}
             </div>
