@@ -55,7 +55,11 @@ function PreviewCart() {
           <CardMedia
             component="img"
             sx={{ width: 100, height: 100, objectFit: "contain" }}
-            image={`/${item.image.split("/").splice(1).join("/")}`}
+            image={
+              checkout.length
+                ? `/${item.image.split("/").splice(1).join("/")}`
+                : item.image
+            }
             alt="item"
           />
           <CardContent sx={{ flexGrow: 1 }}>

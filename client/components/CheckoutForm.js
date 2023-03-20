@@ -198,14 +198,19 @@ const PurchaseForm = () => {
         return null;
     }
   };
-  const grandTotal = checkout.reduce((prev, curr) => prev + curr.totalPrice, 0);
+  const guestCart = JSON.parse(localStorage.getItem("cart"));
+  const grandTotal = checkout.length
+    ? checkout.reduce((prev, curr) => prev + curr.totalPrice, 0)
+    : guestCart
+    ? guestCart.reduce((prev, curr) => prev + curr.price * curr.quantity, 0)
+    : [];
 
   return (
     <FormContainer>
       <Preview>
         <PreviewCart />
         <Typography variant="h4" align="center">
-          Total Price : ${grandTotal}
+          Total Price : ${grandTotal || 0}
         </Typography>
       </Preview>
 
