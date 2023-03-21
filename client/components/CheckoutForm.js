@@ -65,6 +65,7 @@ const FormFooter = styled("div")({
     marginTop: "1rem",
     padding: "0 1rem",
     width: "90%",
+    marginBottom: "5em",
   },
 });
 const Preview = styled("div")({
@@ -180,8 +181,6 @@ const PurchaseForm = () => {
     });
   };
 
-  console.log("cart", cart);
-
   const renderStep = () => {
     switch (step) {
       case 1:
@@ -207,7 +206,7 @@ const PurchaseForm = () => {
     ? guestCart.reduce((prev, curr) => prev + curr.price * curr.quantity, 0)
     : [];
   const cart = checkout.length ? checkout : guestCart;
-  console.log("cart", cart);
+
   return (
     <FormContainer>
       <Preview>
@@ -228,13 +227,13 @@ const PurchaseForm = () => {
       <FormBody>
         {step > 1 && cart.length && (
           <BackButton variant="outlined" onClick={handleBack}>
-            {<ArrowBackIos /> || ""}
+            {<ArrowBackIos />}
           </BackButton>
         )}
         {renderStep()}
         {step < 3 && cart.length && (
           <NextButton variant="contained" onClick={handleNext}>
-            {<ArrowForwardIos /> || ""}
+            {<ArrowForwardIos />}
           </NextButton>
         )}
       </FormBody>

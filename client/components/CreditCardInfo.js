@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { TextField, Box, Checkbox, FormControlLabel } from "@mui/material";
+import {
+  TextField,
+  Box,
+  Checkbox,
+  FormControlLabel,
+  Typography,
+} from "@mui/material";
 import { Grid } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
@@ -28,7 +34,9 @@ const CreditCardInfo = ({ onNext }) => {
         },
       }}
     >
-      <h2>Step 2: Credit Card Information</h2>
+      <Typography variant="h5" align="center" gutterBottom>
+        Step 2: Credit Card Information
+      </Typography>
       <form onSubmit={onNext}>
         <FormContainer>
           <Grid container spacing={2}>

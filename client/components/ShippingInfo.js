@@ -48,7 +48,7 @@ const ShippingInfo = ({ onNext }) => {
         mx: "auto",
         p: 2,
         "@media (max-width:600px)": {
-          marginBottom: "3em",
+          marginBottom: "12em",
         },
       }}
     >
