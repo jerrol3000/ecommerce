@@ -14,7 +14,12 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import { deleteFromCart, fetchCart, updateCart } from "../store/checkoutSlice";
+import {
+  deleteFromCart,
+  fetchCart,
+  updateCart,
+  deleteFromLocalCart,
+} from "../store/checkoutSlice";
 
 function PreviewCart() {
   const dispatch = useDispatch();
@@ -33,13 +38,8 @@ function PreviewCart() {
   const cart = isLoggedIn ? checkout : guestCart ? guestCart : [];
 
   const onDelete = (id) => {
-    if (isLoggedIn) {
-      dispatch(deleteFromCart(id));
-    } else {
-      const newCart = guestCart.filter((item) => item.productId !== id);
-      setGuestCart(newCart);
-      localStorage.setItem("cart", JSON.stringify(newCart));
-    }
+    if (isLoggedIn) dispatch(deleteFromCart(id));
+    dispatch(deleteFromLocalCart(id));
   };
 
   const onSave = () => {
@@ -60,6 +60,7 @@ function PreviewCart() {
   const currentCart = localStorage.getItem("cart");
   useEffect(() => {
     if (isLoggedIn) dispatch(fetchCart(params.userId));
+
     if (currentCart) setGuestCart(JSON.parse(currentCart));
   }, [currentCart]);
 

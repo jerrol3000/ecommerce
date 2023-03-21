@@ -4,7 +4,11 @@ import { Link } from "react-router-dom";
 import { logout } from "../store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { createTheme } from "@material-ui/core/styles";
-import { deleteFromCart, updateCart } from "../store/checkoutSlice";
+import {
+  deleteFromCart,
+  updateCart,
+  deleteFromLocalCart,
+} from "../store/checkoutSlice";
 import {
   faHome,
   faSignOutAlt,
@@ -92,9 +96,7 @@ const Navbar = () => {
     if (isLoggedIn) {
       dispatch(deleteFromCart(cartId));
     } else {
-      const newCart = guestCart.filter((item) => item.productId !== cartId);
-      setGuestCart(newCart);
-      localStorage.setItem("cart", JSON.stringify(newCart));
+      dispatch(deleteFromLocalCart(cartId));
     }
   };
 
@@ -250,7 +252,8 @@ const Navbar = () => {
                       {item.name} ({item.size})
                     </Typography>
                     <Typography variant="body2" color="textSecondary">
-                      quantity: {item.quantity} price: ${item.totalPrice} USD
+                      quantity: {item.quantity} price: $
+                      {isLoggedIn ? item.totalPrice : item.total} USD
                     </Typography>
                   </div>
                 )}

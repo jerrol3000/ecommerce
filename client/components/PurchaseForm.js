@@ -77,6 +77,7 @@ const PurchaseForm = () => {
             size,
             quantity,
             productId: id,
+            total: Number(price) * Number(quantity),
           };
           const currentCart = localStorage.getItem("cart");
           if (currentCart) {

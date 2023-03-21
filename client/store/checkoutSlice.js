@@ -53,21 +53,16 @@ export const updateCart = createAsyncThunk(
 );
 
 const initialState = [];
-
+const cart = JSON.parse(localStorage.getItem("cart"));
 const orderSlice = createSlice({
   name: "order",
   initialState,
   reducers: {
     deleteFromLocalCart: (state, action) => {
-      return state.filter((item) => item.productId !== action.payload);
+      const newCart = cart.filter((item) => item.id !== action.payload);
+      localStorage.setItem("cart", JSON.stringify(newCart));
+      return newCart;
     },
-    updateLocalCart: (state, action) => {
-      const { cartId, size, quantity } = action.payload;
-      return state.map((item) =>
-        item.productId === cartId ? { ...item, size, quantity } : item
-      );
-    },
-    clearCart: () => [],
   },
   extraReducers: {
     [createOrder.fulfilled]: (state, action) => [action.payload, ...state],
@@ -84,5 +79,5 @@ const orderSlice = createSlice({
     },
   },
 });
-
+export const { deleteFromLocalCart } = orderSlice.actions;
 export default orderSlice.reducer;
