@@ -180,6 +180,8 @@ const PurchaseForm = () => {
     });
   };
 
+  console.log("cart", cart);
+
   const renderStep = () => {
     switch (step) {
       case 1:
@@ -204,7 +206,8 @@ const PurchaseForm = () => {
     : guestCart
     ? guestCart.reduce((prev, curr) => prev + curr.price * curr.quantity, 0)
     : [];
-
+  const cart = checkout.length ? checkout : guestCart;
+  console.log("cart", cart);
   return (
     <FormContainer>
       <Preview>
@@ -223,20 +226,20 @@ const PurchaseForm = () => {
         </Typography>
       </FormHeader>
       <FormBody>
-        {step > 1 && checkout.length && (
+        {step > 1 && cart.length && (
           <BackButton variant="outlined" onClick={handleBack}>
             {<ArrowBackIos /> || ""}
           </BackButton>
         )}
         {renderStep()}
-        {step < 3 && checkout.length && (
+        {step < 3 && cart.length && (
           <NextButton variant="contained" onClick={handleNext}>
             {<ArrowForwardIos /> || ""}
           </NextButton>
         )}
       </FormBody>
       <FormFooter>
-        {step === 3 && checkout.length && (
+        {step === 3 && cart.length && (
           <SubmitButton variant="contained" onClick={handleNext}>
             Submit
           </SubmitButton>
