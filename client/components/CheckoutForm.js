@@ -147,7 +147,7 @@ const PurchaseForm = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchCart(id));
+    if (id) dispatch(fetchCart(id));
     anime({
       targets: progressRef.current,
       width: `${progress}%`,

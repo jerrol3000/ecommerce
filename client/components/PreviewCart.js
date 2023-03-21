@@ -59,9 +59,11 @@ function PreviewCart() {
 
   const currentCart = localStorage.getItem("cart");
   useEffect(() => {
-    if (isLoggedIn) dispatch(fetchCart(params.userId));
-
-    if (currentCart) setGuestCart(JSON.parse(currentCart));
+    if (isLoggedIn) {
+      dispatch(fetchCart(params.userId));
+    } else {
+      if (currentCart) setGuestCart(JSON.parse(currentCart));
+    }
   }, [currentCart]);
 
   return (
