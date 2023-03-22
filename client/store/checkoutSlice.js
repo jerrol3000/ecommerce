@@ -52,46 +52,47 @@ export const updateCart = createAsyncThunk(
   }
 );
 
-const initialState = [];
+const initialState = JSON.parse(localStorage.getItem("cart")) || [];
 const orderSlice = createSlice({
   name: "order",
   initialState,
   reducers: {
     deleteFromLocalCart: (state, action) => {
-      const cart = JSON.parse(localStorage.getItem("cart"));
-      const newCart = cart.filter((item) => item.id !== action.payload);
+      const newCart = state.filter((item) => item.id !== action.payload);
       localStorage.setItem("cart", JSON.stringify(newCart));
-      state = JSON.parse(localStorage.getItem("cart"));
-      return state;
+      return newCart;
     },
     addToLocalCart: (state, action) => {
-      const currentCart = JSON.parse(localStorage.getItem("cart")) || [];
+      const currentCart = state;
       if (currentCart.length) {
         const newCart = [...currentCart, action.payload];
         localStorage.setItem("cart", JSON.stringify(newCart));
-
-        return JSON.parse(localStorage.getItem("cart"));
+        return newCart;
       } else {
         state.push(action.payload);
         localStorage.setItem("cart", JSON.stringify(state));
-        return JSON.parse(localStorage.getItem("cart"));
+        return state;
       }
     },
-    getLocalCart: () => JSON.parse(localStorage.getItem("cart")) || [],
+    getLocalCart: (state, action) => state,
   },
-  extraReducers: {
-    [createOrder.fulfilled]: (state, action) => [action.payload, ...state],
-    [fetchCart.fulfilled]: (state, action) => action.payload,
-    [updateCart.fulfilled]: (state, action) => {
-      const updatedItem = action.payload;
-      return state.map((item) =>
-        item.id === updatedItem.id ? updatedItem : item
-      );
-    },
-    [deleteFromCart.fulfilled]: (state, action) => {
-      const deletedItemId = action.payload;
-      return state.filter((item) => item.id !== deletedItemId.id);
-    },
+  extraReducers: (builder) => {
+    builder
+      .addCase(createOrder.fulfilled, (state, action) => [
+        action.payload,
+        ...state,
+      ])
+      .addCase(fetchCart.fulfilled, (state, action) => action.payload)
+      .addCase(updateCart.fulfilled, (state, action) => {
+        const updatedItem = action.payload;
+        return state.map((item) =>
+          item.id === updatedItem.id ? updatedItem : item
+        );
+      })
+      .addCase(deleteFromCart.fulfilled, (state, action) => {
+        const deletedItemId = action.payload;
+        return state.filter((item) => item.id !== deletedItemId.id);
+      });
   },
 });
 export const { deleteFromLocalCart, addToLocalCart, getLocalCart } =
