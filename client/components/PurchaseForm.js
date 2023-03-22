@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./css/purchaseForm.css";
-import { createOrder, fetchCart } from "../store/checkoutSlice";
+import { createOrder, fetchCart, addToLocalCart } from "../store/checkoutSlice";
 import { useNavigate } from "react-router-dom";
 
 const PurchaseForm = () => {
@@ -79,16 +79,7 @@ const PurchaseForm = () => {
             productId: id,
             total: Number(price) * Number(quantity),
           };
-          const currentCart = localStorage.getItem("cart") || [];
-          if (currentCart) {
-            const guestCart = JSON.parse(currentCart);
-            guestCart.push(data);
-            localStorage.setItem("cart", JSON.stringify(guestCart));
-          } else {
-            const guestCart = [];
-            guestCart.push(data);
-            localStorage.setItem("cart", JSON.stringify(guestCart));
-          }
+          dispatch(addToLocalCart(data));
         })();
       };
     }

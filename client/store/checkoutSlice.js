@@ -61,9 +61,23 @@ const orderSlice = createSlice({
       const cart = JSON.parse(localStorage.getItem("cart"));
       const newCart = cart.filter((item) => item.id !== action.payload);
       localStorage.setItem("cart", JSON.stringify(newCart));
-      const updatedCart = JSON.parse(localStorage.getItem("cart")) || [];
-      return updatedCart;
+      state = JSON.parse(localStorage.getItem("cart"));
+      return state;
     },
+    addToLocalCart: (state, action) => {
+      const currentCart = JSON.parse(localStorage.getItem("cart")) || [];
+      if (currentCart.length) {
+        const newCart = [...currentCart, action.payload];
+        localStorage.setItem("cart", JSON.stringify(newCart));
+
+        return JSON.parse(localStorage.getItem("cart"));
+      } else {
+        state.push(action.payload);
+        localStorage.setItem("cart", JSON.stringify(state));
+        return JSON.parse(localStorage.getItem("cart"));
+      }
+    },
+    getLocalCart: () => JSON.parse(localStorage.getItem("cart")) || [],
   },
   extraReducers: {
     [createOrder.fulfilled]: (state, action) => [action.payload, ...state],
@@ -80,5 +94,6 @@ const orderSlice = createSlice({
     },
   },
 });
-export const { deleteFromLocalCart } = orderSlice.actions;
+export const { deleteFromLocalCart, addToLocalCart, getLocalCart } =
+  orderSlice.actions;
 export default orderSlice.reducer;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import anime from "animejs";
 import { styled } from "@mui/material/styles";
-import { fetchCart } from "../store/checkoutSlice";
+import { fetchCart, getLocalCart } from "../store/checkoutSlice";
 import { Dispatch } from "react";
 import { Button, Container, Typography } from "@mui/material";
 import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
@@ -156,7 +156,9 @@ const PurchaseForm = () => {
       duration: 500,
     });
   }, [progress]);
-
+  useEffect(() => {
+    dispatch(getLocalCart());
+  }, []);
   const handleNext = (event) => {
     event.preventDefault();
     setProgress((prevProgress) => prevProgress + 33.33);
@@ -199,13 +201,10 @@ const PurchaseForm = () => {
         return null;
     }
   };
-  const guestCart = JSON.parse(localStorage.getItem("cart"));
-  const grandTotal = checkout.length
+
+  const grandTotal = id
     ? checkout.reduce((prev, curr) => prev + curr.totalPrice, 0)
-    : guestCart
-    ? guestCart.reduce((prev, curr) => prev + curr.price * curr.quantity, 0)
-    : [];
-  const cart = checkout.length ? checkout : guestCart;
+    : checkout.reduce((prev, curr) => prev + curr.total, 0);
 
   return (
     <FormContainer>
@@ -225,20 +224,20 @@ const PurchaseForm = () => {
         </Typography>
       </FormHeader>
       <FormBody>
-        {step > 1 && cart.length && (
+        {step > 1 && (
           <BackButton variant="outlined" onClick={handleBack}>
             {<ArrowBackIos />}
           </BackButton>
         )}
         {renderStep()}
-        {step < 3 && cart.length && (
+        {step < 3 && (
           <NextButton variant="contained" onClick={handleNext}>
             {<ArrowForwardIos />}
           </NextButton>
         )}
       </FormBody>
       <FormFooter>
-        {step === 3 && cart.length && (
+        {step === 3 && (
           <SubmitButton variant="contained" onClick={handleNext}>
             Submit
           </SubmitButton>

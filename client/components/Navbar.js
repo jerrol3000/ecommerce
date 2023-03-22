@@ -62,10 +62,10 @@ const Navbar = () => {
   const [quantity, setQuantity] = useState(0);
   const [size, setSize] = useState("");
   const [guestCart, setGuestCart] = useState(
-    JSON.parse(localStorage.getItem("cart")) || []
+    JSON.parse(localStorage.getItem("cart"))
   );
 
-  const currentCart = localStorage.getItem("cart") || [];
+  const currentCart = localStorage.getItem("cart");
   const { checkout } = useSelector((state) => state);
 
   const cart = isLoggedIn ? checkout : guestCart ? guestCart : [];

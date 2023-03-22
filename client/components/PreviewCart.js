@@ -19,6 +19,7 @@ import {
   fetchCart,
   updateCart,
   deleteFromLocalCart,
+  getLocalCart,
 } from "../store/checkoutSlice";
 
 function PreviewCart() {
@@ -31,25 +32,22 @@ function PreviewCart() {
   const [editingItemId, setEditingItemId] = useState(null);
   const [size, setSize] = useState("");
   const [quantity, setQuantity] = useState("");
-  const [guestCart, setGuestCart] = useState(
-    JSON.parse(localStorage.getItem("cart")) || []
-  );
-
-  const cart = isLoggedIn ? checkout : guestCart ? guestCart : [];
 
   const onDelete = (id) => {
-    if (isLoggedIn) dispatch(deleteFromCart(id));
-    dispatch(deleteFromLocalCart(id));
+    if (isLoggedIn) {
+      dispatch(deleteFromCart(id));
+    } else {
+      dispatch(deleteFromLocalCart(id));
+    }
   };
 
   const onSave = () => {
     if (isLoggedIn) {
       dispatch(updateCart({ cartId: editingItemId, size, quantity }));
     } else {
-      const updatedCart = guestCart.map((item) =>
+      const updatedCart = checkout.map((item) =>
         item.productId === editingItemId ? { ...item, size, quantity } : item
       );
-      setGuestCart(updatedCart);
       localStorage.setItem("cart", JSON.stringify(updatedCart));
     }
     setEditingItemId(null);
@@ -57,24 +55,24 @@ function PreviewCart() {
     setSize("");
   };
 
-  const currentCart = localStorage.getItem("cart") || [];
+  const currentCart = localStorage.getItem("cart");
   useEffect(() => {
-    if (isLoggedIn) {
-      dispatch(fetchCart(params.userId));
-    } else {
-      if (currentCart) setGuestCart(JSON.parse(currentCart));
+    if (isLoggedIn) dispatch(fetchCart(params.userId));
+
+    if (currentCart) {
+      dispatch(getLocalCart());
     }
   }, [currentCart]);
 
   return (
     <div>
-      {cart.map((item, i) => (
+      {checkout.map((item, i) => (
         <Card key={item.id || i} sx={{ display: "flex", alignItems: "center" }}>
           <CardMedia
             component="img"
             sx={{ width: 100, height: 100, objectFit: "contain" }}
             image={
-              checkout.length
+              isLoggedIn
                 ? `/${item.image.split("/").splice(1).join("/")}`
                 : item.image
             }
