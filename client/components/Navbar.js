@@ -65,7 +65,7 @@ const Navbar = () => {
     JSON.parse(localStorage.getItem("cart")) || []
   );
 
-  const currentCart = localStorage.getItem("cart");
+  const currentCart = localStorage.getItem("cart") || [];
   const { checkout } = useSelector((state) => state);
 
   const cart = isLoggedIn ? checkout : guestCart ? guestCart : [];

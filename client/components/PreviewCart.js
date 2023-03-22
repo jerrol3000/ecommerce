@@ -57,7 +57,7 @@ function PreviewCart() {
     setSize("");
   };
 
-  const currentCart = localStorage.getItem("cart");
+  const currentCart = localStorage.getItem("cart") || [];
   useEffect(() => {
     if (isLoggedIn) {
       dispatch(fetchCart(params.userId));

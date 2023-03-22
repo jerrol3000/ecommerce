@@ -79,7 +79,7 @@ const PurchaseForm = () => {
             productId: id,
             total: Number(price) * Number(quantity),
           };
-          const currentCart = localStorage.getItem("cart");
+          const currentCart = localStorage.getItem("cart") || [];
           if (currentCart) {
             const guestCart = JSON.parse(currentCart);
             guestCart.push(data);
