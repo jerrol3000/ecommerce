@@ -122,7 +122,7 @@ const ModalWithRating = ({ productId, averageRating }) => {
   }, [title, body, rating]);
 
   useEffect(() => {
-    if (!isValid) {
+    if (isValid) {
       setShowAlert(false);
     } else {
       setShowAlert(true);
@@ -165,9 +165,8 @@ const ModalWithRating = ({ productId, averageRating }) => {
       setBody(event.target.value);
     }
   };
-
   const handleEditSubmit = () => {
-    if (isValid) {
+    if (!isValid) {
       dispatch(
         updateReview({
           productId,
@@ -182,7 +181,7 @@ const ModalWithRating = ({ productId, averageRating }) => {
       setEditReview(null);
       setOpen(false);
     } else {
-      setShowAlert(true);
+      setShowAlert(false);
     }
   };
 
