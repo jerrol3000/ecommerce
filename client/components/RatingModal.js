@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchReviews, postReview, updateReview } from "../store/reviewSlice";
 import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
+import { Alert } from "@mui/material";
 import Modal from "@material-ui/core/Modal";
 import Rating from "./Rating";
 import TextField from "@material-ui/core/TextField";
@@ -19,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     position: "absolute",
     width: "70%",
-    top: "51%",
+    top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
     backgroundColor: theme.palette.background.paper,
@@ -108,11 +109,25 @@ const ModalWithRating = ({ productId, averageRating }) => {
   const [body, setBody] = useState("");
   const [title, setTitle] = useState("");
   const [editReview, setEditReview] = useState(null);
+  const [isValid, setIsValid] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
 
   const dispatch = useDispatch();
   const { reviewsById } = useSelector((state) => state.review);
   const rating = useSelector((state) => state.rating);
   const currentUser = useSelector((state) => state.auth.id);
+
+  useEffect(() => {
+    setIsValid(Boolean(title && body && rating));
+  }, [title, body, rating]);
+
+  useEffect(() => {
+    if (!isValid) {
+      setShowAlert(false);
+    } else {
+      setShowAlert(true);
+    }
+  }, [isValid]);
 
   const handleOpen = () => {
     setOpen(true);
@@ -152,24 +167,32 @@ const ModalWithRating = ({ productId, averageRating }) => {
   };
 
   const handleEditSubmit = () => {
-    dispatch(
-      updateReview({
-        productId,
-        review: {
-          title: editReview.title,
-          body: editReview.body,
-          rating,
-          id: editReview.id,
-        },
-      })
-    );
-    setEditReview(null);
-    setOpen(false);
+    if (isValid) {
+      dispatch(
+        updateReview({
+          productId,
+          review: {
+            title: editReview.title,
+            body: editReview.body,
+            rating,
+            id: editReview.id,
+          },
+        })
+      );
+      setEditReview(null);
+      setOpen(false);
+    } else {
+      setShowAlert(true);
+    }
   };
 
   const handleSubmit = () => {
-    dispatch(postReview({ productId, review: { title, body, rating } }));
-    handleClose();
+    if (isValid) {
+      dispatch(postReview({ productId, review: { title, body, rating } }));
+      handleClose();
+    } else {
+      setShowAlert(true);
+    }
   };
 
   return (
@@ -210,6 +233,12 @@ const ModalWithRating = ({ productId, averageRating }) => {
             <button className={classes.closeButton} onClick={handleClose}>
               X
             </button>
+            {showAlert && (
+              <Alert severity="warning">
+                Please enter a title, comment, and rating.
+              </Alert>
+            )}
+
             <h2 id="simple-modal-title">Rate this product</h2>
             <Rating />
             <TextField
@@ -243,7 +272,7 @@ const ModalWithRating = ({ productId, averageRating }) => {
               onClick={editReview ? handleEditSubmit : handleSubmit}
               disabled={currentUser ? false : true}
             >
-              Submit
+              {editReview ? "Update Review" : "Submit Review"}
             </Button>
             <div className={classes.commentsBox}>
               {reviewsById.length ? (
