@@ -204,7 +204,7 @@ const PurchaseForm = () => {
 
   const grandTotal = id
     ? checkout.reduce((prev, curr) => prev + curr.totalPrice, 0)
-    : checkout.reduce((prev, curr) => prev + curr.total, 0);
+    : checkout.reduce((prev, curr) => prev + curr.price * curr.quantity, 0);
 
   return (
     <FormContainer>
@@ -224,20 +224,20 @@ const PurchaseForm = () => {
         </Typography>
       </FormHeader>
       <FormBody>
-        {step > 1 && (
+        {step > 1 && grandTotal && (
           <BackButton variant="outlined" onClick={handleBack}>
             {<ArrowBackIos />}
           </BackButton>
         )}
         {renderStep()}
-        {step < 3 && (
+        {step < 3 && grandTotal && (
           <NextButton variant="contained" onClick={handleNext}>
             {<ArrowForwardIos />}
           </NextButton>
         )}
       </FormBody>
       <FormFooter>
-        {step === 3 && (
+        {step === 3 && grandTotal && (
           <SubmitButton variant="contained" onClick={handleNext}>
             Submit
           </SubmitButton>

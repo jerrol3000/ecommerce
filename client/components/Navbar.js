@@ -250,7 +250,10 @@ const Navbar = () => {
                     </Typography>
                     <Typography variant="body2" color="textSecondary">
                       quantity: {item.quantity} price: $
-                      {isLoggedIn ? item.totalPrice : item.total} USD
+                      {isLoggedIn
+                        ? item.totalPrice
+                        : Number(item.price) * Number(item.quantity)}{" "}
+                      USD
                     </Typography>
                   </div>
                 )}

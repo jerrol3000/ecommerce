@@ -77,7 +77,6 @@ const PurchaseForm = () => {
             size,
             quantity,
             productId: id,
-            total: Number(price) * Number(quantity),
           };
           dispatch(addToLocalCart(data));
         })();
