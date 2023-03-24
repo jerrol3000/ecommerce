@@ -74,6 +74,14 @@ const orderSlice = createSlice({
         return state;
       }
     },
+    updateLocalCart: (state, action) => {
+      const { editingItemId, size, quantity } = action.payload;
+      const updatedCart = state.map((item) =>
+        item.productId === editingItemId ? { ...item, size, quantity } : item
+      );
+      localStorage.setItem("cart", JSON.stringify(updatedCart));
+      return updatedCart;
+    },
     getLocalCart: (state, action) => state,
   },
   extraReducers: (builder) => {
@@ -95,6 +103,10 @@ const orderSlice = createSlice({
       });
   },
 });
-export const { deleteFromLocalCart, addToLocalCart, getLocalCart } =
-  orderSlice.actions;
+export const {
+  deleteFromLocalCart,
+  addToLocalCart,
+  getLocalCart,
+  updateLocalCart,
+} = orderSlice.actions;
 export default orderSlice.reducer;

@@ -8,6 +8,7 @@ import {
   deleteFromCart,
   updateCart,
   deleteFromLocalCart,
+  updateLocalCart,
 } from "../store/checkoutSlice";
 import {
   faHome,
@@ -111,11 +112,7 @@ const Navbar = () => {
     if (isLoggedIn) {
       dispatch(updateCart({ cartId: editingItemId, size, quantity }));
     } else {
-      const updatedCart = guestCart.map((item) =>
-        item.productId === editingItemId ? { ...item, size, quantity } : item
-      );
-      setGuestCart(updatedCart);
-      localStorage.setItem("cart", JSON.stringify(updatedCart));
+      dispatch(updateLocalCart({ editingItemId, size, quantity }));
     }
     setEditingItemId(null);
     setQuantity(0);

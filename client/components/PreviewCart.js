@@ -20,6 +20,7 @@ import {
   updateCart,
   deleteFromLocalCart,
   getLocalCart,
+  updateLocalCart,
 } from "../store/checkoutSlice";
 
 function PreviewCart() {
@@ -45,10 +46,7 @@ function PreviewCart() {
     if (isLoggedIn) {
       dispatch(updateCart({ cartId: editingItemId, size, quantity }));
     } else {
-      const updatedCart = checkout.map((item) =>
-        item.productId === editingItemId ? { ...item, size, quantity } : item
-      );
-      localStorage.setItem("cart", JSON.stringify(updatedCart));
+      dispatch(updateLocalCart({ editingItemId, size, quantity }));
     }
     setEditingItemId(null);
     setQuantity(0);
