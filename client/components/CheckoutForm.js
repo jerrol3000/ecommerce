@@ -74,7 +74,8 @@ const Preview = styled("div")({
   justifyContent: "space-between",
   width: "100%",
   "@media (max-width: 600px)": {
-    flexDirection: "columnReverse",
+    flexDirection: "column",
+    alignItems: "center",
     marginTop: "1rem",
     padding: "0 1rem",
     width: "90%",
@@ -210,8 +211,8 @@ const PurchaseForm = () => {
     <FormContainer>
       <Preview>
         <PreviewCart />
-        <Typography variant="h4" align="center">
-          Total Price : ${grandTotal}
+        <Typography variant="h5" align="center">
+          Total: ${grandTotal}
         </Typography>
       </Preview>
 
