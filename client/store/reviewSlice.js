@@ -65,7 +65,7 @@ const initialState = {
   reviewsById: [],
   allReviews: [],
   postReview: [],
-  averageRating: null,
+  averageRating: 0,
 };
 
 const reviewtSlice = createSlice({

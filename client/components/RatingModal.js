@@ -136,6 +136,7 @@ const ModalWithRating = ({ productId, averageRating }) => {
 
   const handleClose = () => {
     setOpen(false);
+
     dispatch(resetRating());
     setBody("");
     setTitle("");
@@ -188,6 +189,7 @@ const ModalWithRating = ({ productId, averageRating }) => {
   const handleSubmit = () => {
     if (isValid) {
       dispatch(postReview({ productId, review: { title, body, rating } }));
+
       handleClose();
     } else {
       setShowAlert(true);
