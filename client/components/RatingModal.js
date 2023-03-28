@@ -189,7 +189,7 @@ const ModalWithRating = ({ productId, averageRating }) => {
   const handleSubmit = () => {
     if (isValid) {
       dispatch(postReview({ productId, review: { title, body, rating } }));
-
+      dispatch(fetchReviews(productId));
       handleClose();
     } else {
       setShowAlert(true);

@@ -61,6 +61,19 @@ export const updateReview = createAsyncThunk(
   }
 );
 
+export const calculateAverageRating = createAsyncThunk(
+  "products/calculateAverageRating",
+  async (id, thunkAPI) => {
+    const { allReviews } = await thunkAPI.getState().review;
+    const array = allReviews.filter((review) => review.productId === id);
+    return array.length
+      ? Math.floor(
+          array.reduce((pre, cur) => pre + cur.rating, 0) / array.length
+        )
+      : 0;
+  }
+);
+
 const initialState = {
   reviewsById: [],
   allReviews: [],
@@ -81,7 +94,31 @@ const reviewtSlice = createSlice({
     },
     [postReview.fulfilled]: (state, action) => {
       state.postReview = action.payload;
+      const { productId, rating } = action.payload;
+      const index = state.allReviews.findIndex(
+        (review) => review.productId === productId
+      );
+      if (index !== -1) {
+        state.allReviews[index].rating = rating;
+        state.averageRating = Math.floor(
+          state.allReviews
+            .filter((review) => review.productId === productId)
+            .reduce((pre, cur) => pre + cur.rating, 0) /
+            state.allReviews.filter((review) => review.productId === productId)
+              .length
+        );
+      } else {
+        state.allReviews.push(action.payload);
+        state.averageRating = Math.floor(
+          state.allReviews
+            .filter((review) => review.productId === productId)
+            .reduce((pre, cur) => pre + cur.rating, 0) /
+            state.allReviews.filter((review) => review.productId === productId)
+              .length
+        );
+      }
     },
+
     [updateReview.fulfilled]: (state, action) => {
       state.postReview = action.payload;
     },
