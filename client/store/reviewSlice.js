@@ -96,7 +96,7 @@ const reviewSlice = createSlice({
         state.postReview = action.payload;
         const newReview = action.payload;
         state.allReviews.push(newReview);
-        const { productId, rating } = action.payload;
+        const { productId } = action.payload;
         const index = state.allReviews.findIndex(
           (review) => review.productId === productId
         );
@@ -104,11 +104,9 @@ const reviewSlice = createSlice({
           (review) => review.productId === productId
         );
         if (index !== -1) {
-          // state.allReviews[index].rating = rating;
           state.averageRating = Math.floor(
             array.reduce((pre, cur) => pre + cur.rating, 0) / array.length
           );
-          console.log("state.averageRating", state.averageRating);
         } else {
           state.allReviews.push(action.payload);
           state.averageRating = Math.floor(
@@ -117,8 +115,9 @@ const reviewSlice = createSlice({
         }
       })
       .addCase(updateReview.fulfilled, (state, action) => {
+        const newReview = action.payload;
+        state.allReviews.push(newReview);
         const { productId } = action.payload;
-        console.log("action.payload", action.payload, productId);
         const array = state.allReviews.filter(
           (review) => review.productId === productId
         );
