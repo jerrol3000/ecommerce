@@ -5,7 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import "./css/product.css";
 import RatingModal from "./RatingModal";
-import { fetchAllReviews, calculateAverageRating } from "../store/reviewSlice";
+import { fetchAllReviews } from "../store/reviewSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({

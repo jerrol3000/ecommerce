@@ -40,7 +40,7 @@ const Routes = () => {
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/products/:productId" element={<SingleProduct />} />
             <Route path="/checkout/:userId" element={<CheckoutForm />} />
-            <Route path="/review/:productId" element={<Reviews />} />
+            <Route path="/review/:reviewId" element={<Reviews />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/" element={<LandingPage />} />

@@ -60,16 +60,20 @@ router.post("/:productId", requireToken, async (req, res, next) => {
 });
 
 //PUT route
-router.put("/:productId", requireToken, async (req, res, next) => {
-  const { productId } = req.params;
+router.put("/:id", requireToken, async (req, res, next) => {
+  const { id } = req.params;
   const { title, body, rating } = req.body;
   const userId = req.user.id;
   try {
-    const review = await Review.update(
+    const [numRowsUpdated, updatedReview] = await Review.update(
       { title, body, rating },
-      { where: { productId, userId } }
+      { where: { id, userId }, returning: true }
     );
-    res.json(review);
+    if (numRowsUpdated === 0) {
+      res.status(404).send({ error: "Review not found" });
+    } else {
+      res.status(200).json(updatedReview[0]);
+    }
   } catch (error) {
     next(error);
   }

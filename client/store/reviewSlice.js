@@ -45,10 +45,10 @@ export const postReview = createAsyncThunk(
 
 export const updateReview = createAsyncThunk(
   "products/updateReview",
-  async ({ productId, review }, thunkAPI) => {
+  async ({ reviewId, review }, thunkAPI) => {
     try {
       const { data } = await axios.put(
-        `/api/review/${productId}`,
+        `/api/review/${reviewId}`,
         review,
         sendToken()
       );
@@ -60,23 +60,11 @@ export const updateReview = createAsyncThunk(
   }
 );
 
-export const calculateAverageRating = createAsyncThunk(
-  "products/calculateAverageRating",
-  async (id, thunkAPI) => {
-    const { allReviews } = thunkAPI.getState().reviews;
-    const array = allReviews.filter((review) => review.productId === id);
-    return array.length
-      ? Math.floor(
-          array.reduce((pre, cur) => pre + cur.rating, 0) / array.length
-        )
-      : 0;
-  }
-);
-
 const initialState = {
   reviewsById: {},
   allReviews: [],
   postReview: [],
+  editedReview: {},
   averageRating: 0,
 };
 
@@ -115,8 +103,7 @@ const reviewSlice = createSlice({
         }
       })
       .addCase(updateReview.fulfilled, (state, action) => {
-        const newReview = action.payload;
-        state.allReviews.push(newReview);
+        state.editedReview = action.payload;
         const { productId } = action.payload;
         const array = state.allReviews.filter(
           (review) => review.productId === productId

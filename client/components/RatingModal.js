@@ -111,6 +111,7 @@ const ModalWithRating = ({ productId, averageRating }) => {
   const [editReview, setEditReview] = useState(null);
   const [isValid, setIsValid] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
+  const [reviewId, setReviewId] = useState(null);
 
   const dispatch = useDispatch();
   const { reviewsById } = useSelector((state) => state.review);
@@ -131,7 +132,6 @@ const ModalWithRating = ({ productId, averageRating }) => {
 
   const handleOpen = () => {
     setOpen(true);
-
     dispatch(fetchReviews(productId));
   };
 
@@ -144,6 +144,7 @@ const ModalWithRating = ({ productId, averageRating }) => {
   };
   const handleEdit = (id) => {
     const reviewToEdit = reviewsById.find((review) => review.id === id);
+    setReviewId(id);
     setEditReview(reviewToEdit);
   };
 
@@ -168,21 +169,21 @@ const ModalWithRating = ({ productId, averageRating }) => {
       setBody(event.target.value);
     }
   };
+
   const handleEditSubmit = () => {
     if (!isValid) {
       dispatch(
         updateReview({
-          productId,
+          reviewId,
           review: {
             title: editReview.title,
             body: editReview.body,
             rating,
-            id: editReview.id,
           },
         })
       );
       setEditReview(null);
-      setOpen(false);
+      handleClose();
     } else {
       setShowAlert(false);
     }
@@ -191,7 +192,6 @@ const ModalWithRating = ({ productId, averageRating }) => {
   const handleSubmit = () => {
     if (isValid) {
       dispatch(postReview({ productId, review: { title, body, rating } }));
-      dispatch(fetchReviews(productId));
       handleClose();
     } else {
       setShowAlert(true);
