@@ -131,6 +131,7 @@ const ModalWithRating = ({ productId, averageRating }) => {
 
   const handleOpen = () => {
     setOpen(true);
+
     dispatch(fetchReviews(productId));
   };
 
@@ -145,6 +146,7 @@ const ModalWithRating = ({ productId, averageRating }) => {
     const reviewToEdit = reviewsById.find((review) => review.id === id);
     setEditReview(reviewToEdit);
   };
+
   const handleTitleChange = (event) => {
     if (editReview) {
       setEditReview({

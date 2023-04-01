@@ -7,6 +7,7 @@ const Product = require("./models/Product");
 const Cart = require("./models/Cart");
 const CartItem = require("./models/CartItem");
 const Review = require("./models/Review");
+const AverageRating = require("./models/AverageRating");
 
 //associations go here!
 User.hasMany(Cart);
@@ -26,6 +27,9 @@ Review.belongsTo(Product);
 User.hasMany(Review);
 Review.belongsTo(User);
 
+Product.hasOne(AverageRating);
+AverageRating.belongsTo(Product);
+
 module.exports = {
   db,
   models: {
@@ -34,5 +38,6 @@ module.exports = {
     Cart,
     CartItem,
     Review,
+    AverageRating,
   },
 };

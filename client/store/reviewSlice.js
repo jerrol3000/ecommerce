@@ -14,7 +14,6 @@ export const fetchReviews = createAsyncThunk(
   }
 );
 
-//get all review
 export const fetchAllReviews = createAsyncThunk(
   "products/fetchAllReviews",
   async () => {
@@ -64,7 +63,7 @@ export const updateReview = createAsyncThunk(
 export const calculateAverageRating = createAsyncThunk(
   "products/calculateAverageRating",
   async (id, thunkAPI) => {
-    const { allReviews } = await thunkAPI.getState().review;
+    const { allReviews } = thunkAPI.getState().reviews;
     const array = allReviews.filter((review) => review.productId === id);
     return array.length
       ? Math.floor(
@@ -75,54 +74,59 @@ export const calculateAverageRating = createAsyncThunk(
 );
 
 const initialState = {
-  reviewsById: [],
+  reviewsById: {},
   allReviews: [],
   postReview: [],
   averageRating: 0,
 };
 
-const reviewtSlice = createSlice({
+const reviewSlice = createSlice({
   name: "reviews",
   initialState,
   reducers: {},
-  extraReducers: {
-    [fetchReviews.fulfilled]: (state, action) => {
-      state.reviewsById = action.payload;
-    },
-    [fetchAllReviews.fulfilled]: (state, action) => {
-      state.allReviews = action.payload;
-    },
-    [postReview.fulfilled]: (state, action) => {
-      state.postReview = action.payload;
-      const { productId, rating } = action.payload;
-      const index = state.allReviews.findIndex(
-        (review) => review.productId === productId
-      );
-      if (index !== -1) {
-        state.allReviews[index].rating = rating;
-        state.averageRating = Math.floor(
-          state.allReviews
-            .filter((review) => review.productId === productId)
-            .reduce((pre, cur) => pre + cur.rating, 0) /
-            state.allReviews.filter((review) => review.productId === productId)
-              .length
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchReviews.fulfilled, (state, action) => {
+        state.reviewsById = action.payload;
+      })
+      .addCase(fetchAllReviews.fulfilled, (state, action) => {
+        state.allReviews = action.payload;
+      })
+      .addCase(postReview.fulfilled, (state, action) => {
+        state.postReview = action.payload;
+        const newReview = action.payload;
+        state.allReviews.push(newReview);
+        const { productId, rating } = action.payload;
+        const index = state.allReviews.findIndex(
+          (review) => review.productId === productId
         );
-      } else {
-        state.allReviews.push(action.payload);
-        state.averageRating = Math.floor(
-          state.allReviews
-            .filter((review) => review.productId === productId)
-            .reduce((pre, cur) => pre + cur.rating, 0) /
-            state.allReviews.filter((review) => review.productId === productId)
-              .length
+        const array = state.allReviews.filter(
+          (review) => review.productId === productId
         );
-      }
-    },
-
-    [updateReview.fulfilled]: (state, action) => {
-      state.postReview = action.payload;
-    },
+        if (index !== -1) {
+          // state.allReviews[index].rating = rating;
+          state.averageRating = Math.floor(
+            array.reduce((pre, cur) => pre + cur.rating, 0) / array.length
+          );
+          console.log("state.averageRating", state.averageRating);
+        } else {
+          state.allReviews.push(action.payload);
+          state.averageRating = Math.floor(
+            array.reduce((pre, cur) => pre + cur.rating, 0) / array.length
+          );
+        }
+      })
+      .addCase(updateReview.fulfilled, (state, action) => {
+        const { productId } = action.payload;
+        console.log("action.payload", action.payload, productId);
+        const array = state.allReviews.filter(
+          (review) => review.productId === productId
+        );
+        state.averageRating = Math.floor(
+          array.reduce((pre, cur) => pre + cur.rating, 0) / array.length
+        );
+      });
   },
 });
 
-export default reviewtSlice.reducer;
+export default reviewSlice.reducer;

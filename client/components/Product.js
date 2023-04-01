@@ -1,9 +1,12 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import anime from "animejs/lib/anime.es.js"; // import animejs library
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import "./css/product.css";
+import RatingModal from "./RatingModal";
+import { fetchAllReviews, calculateAverageRating } from "../store/reviewSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -29,10 +32,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Product({ name, image, price, description, id }) {
-  const cardRef = useRef(null); // create a reference to the card element
+  const cardRef = useRef(null);
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const { allReviews } = useSelector((state) => state.review);
 
-  // add event listeners to the card's parent element
+  useEffect(() => {
+    dispatch(fetchAllReviews());
+  }, [dispatch]);
+
   const handleMouseEnter = () => {
     anime({
       targets: cardRef.current,
@@ -50,6 +58,14 @@ function Product({ name, image, price, description, id }) {
       duration: 300,
     });
   };
+  const averageRating = (id) => {
+    const array = allReviews.filter((review) => review.productId === id);
+    return array.length
+      ? Math.floor(
+          array.reduce((pre, cur) => pre + Number(cur.rating), 0) / array.length
+        )
+      : 0;
+  };
 
   return (
     <div
@@ -58,6 +74,7 @@ function Product({ name, image, price, description, id }) {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
+      <RatingModal productId={id} averageRating={averageRating(id)} />
       <Typography variant="h5" className={classes.title}>
         {name}
       </Typography>
