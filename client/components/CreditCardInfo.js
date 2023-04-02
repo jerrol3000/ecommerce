@@ -18,6 +18,35 @@ const FormContainer = styled("div")(({ theme }) => ({
 
 const CreditCardInfo = ({ onNext }) => {
   const [sameAsShipping, setSameAsShipping] = useState(false);
+  const [cardName, setCardName] = useState("");
+  const [cardNumber, setCardNumber] = useState("");
+  const [exDate, setExDate] = useState("");
+  const [cvv, setCvv] = useState("");
+
+  const [address, setAddress] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [zipCode, setZipCode] = useState("");
+
+  const cardData = {
+    cardName,
+    cardNumber,
+    exDate,
+    cvv,
+  };
+
+  const billingAddress = {
+    address,
+    city,
+    state,
+    zipCode,
+  };
+  localStorage.setItem("cardData", JSON.stringify(cardData));
+  if (!sameAsShipping) {
+    localStorage.setItem("billingAddress", JSON.stringify(billingAddress));
+  } else {
+    localStorage.removeItem("billingAddress");
+  }
 
   const handleSameAsShippingChange = (event) => {
     setSameAsShipping(event.target.checked);
@@ -41,16 +70,40 @@ const CreditCardInfo = ({ onNext }) => {
         <FormContainer>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <TextField label="Name on Card" required fullWidth />
+              <TextField
+                fullWidth
+                label="Name on Card"
+                required
+                value={cardName}
+                onChange={(e) => setCardName(e.target.value)}
+              />
             </Grid>
             <Grid item xs={12}>
-              <TextField label="Card Number" required fullWidth />
+              <TextField
+                fullWidth
+                label="Card Number"
+                required
+                value={cardNumber}
+                onChange={(e) => setCardNumber(e.target.value)}
+              />
             </Grid>
             <Grid item xs={6}>
-              <TextField label="Expiration Date" required fullWidth />
+              <TextField
+                fullWidth
+                label="Expiration Date"
+                required
+                value={exDate}
+                onChange={(e) => setExDate(e.target.value)}
+              />
             </Grid>
             <Grid item xs={6}>
-              <TextField label="CVV" required fullWidth />
+              <TextField
+                fullWidth
+                label="CVV"
+                required
+                value={cvv}
+                onChange={(e) => setCvv(e.target.value)}
+              />
             </Grid>
             <Grid item xs={12}>
               <FormControlLabel
@@ -67,22 +120,39 @@ const CreditCardInfo = ({ onNext }) => {
               <>
                 <Grid item xs={12}>
                   <TextField
-                    label="Billing Address Line 1"
-                    required
                     fullWidth
+                    label="Address"
+                    required
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    fullWidth
+                    label="City"
+                    required
+                    value={city}
+                    onChange={(e) => setCity(e.target.value)}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    label="State"
+                    required
+                    value={state}
+                    onChange={(e) => setState(e.target.value)}
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <TextField label="Billing Address Line 2" fullWidth />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField label="City" required fullWidth />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField label="State" required fullWidth />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField label="Zip Code" required fullWidth />
+                  <TextField
+                    fullWidth
+                    label="Zip Code"
+                    required
+                    value={zipCode}
+                    onChange={(e) => setZipCode(e.target.value)}
+                  />
                 </Grid>
               </>
             )}

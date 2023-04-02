@@ -1,7 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import anime from "animejs";
 import { styled } from "@mui/material/styles";
-import { fetchCart, getLocalCart } from "../store/checkoutSlice";
+import {
+  addToLocalCart,
+  fetchCart,
+  getLocalCart,
+} from "../store/checkoutSlice";
 import { Dispatch } from "react";
 import { Button, Container, Typography } from "@mui/material";
 import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
@@ -160,6 +164,7 @@ const PurchaseForm = () => {
   useEffect(() => {
     dispatch(getLocalCart());
   }, []);
+
   const handleNext = (event) => {
     event.preventDefault();
     setProgress((prevProgress) => prevProgress + 33.33);
@@ -170,6 +175,11 @@ const PurchaseForm = () => {
       duration: 500,
       complete: () => setStep((prevStep) => prevStep + 1),
     });
+    if (step === null) {
+      localStorage.removeItem("cardData");
+      localStorage.removeItem("shippingInfo");
+      localStorage.removeItem("billingAddress");
+    }
   };
 
   const handleBack = (event) => {

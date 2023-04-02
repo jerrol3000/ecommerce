@@ -1,7 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Typography, Box, Button, Grid } from "@mui/material";
+import { useSelector, useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
+import { fetchCart } from "../store/checkoutSlice";
 
 const Confirmation = ({ onPrev, onSubmit }) => {
+  const dispatch = useDispatch();
+  const params = useParams();
+  const { checkout } = useSelector((state) => state);
+
+  useEffect(() => {
+    dispatch(fetchCart(params.userId));
+  }, []);
+
+  const shippingInfo = JSON.parse(localStorage.getItem("shippingInfo"));
+  const billingAddress = localStorage.getItem("billingAddress")
+    ? JSON.parse(localStorage.getItem("billingAddress"))
+    : null;
+  const cardData = JSON.parse(localStorage.getItem("cardData"));
+
   return (
     <>
       <Typography variant="h5" align="center" gutterBottom>
@@ -30,15 +47,31 @@ const Confirmation = ({ onPrev, onSubmit }) => {
         <Grid container spacing={1} sx={{ my: 1 }}>
           <Grid item xs={12}>
             <Typography variant="h6">Shipping Information</Typography>
-            <Typography variant="subtitle2">...</Typography>
+            <Typography variant="subtitle2">
+              {shippingInfo.fullName} <br />
+              {shippingInfo.address} <br />
+              {shippingInfo.city}, {shippingInfo.state} {shippingInfo.zipCode}{" "}
+              <br />
+              {shippingInfo.email} <br />
+              {shippingInfo.phoneNumber}
+            </Typography>
           </Grid>
           <Grid item xs={12}>
             <Typography variant="h6">Credit Card Information</Typography>
-            <Typography variant="subtitle2">...</Typography>
+            <Typography variant="subtitle2">
+              Cardholder Name: {cardData.cardName} <br />
+              Card Number: {cardData.cardNumber} <br />
+              CVV: {cardData.cvv} <br />
+              Expiration Date: {cardData.exDate}
+            </Typography>
           </Grid>
           <Grid item xs={12}>
             <Typography variant="h6">Order Summary</Typography>
-            <Typography variant="subtitle2">...</Typography>
+            {checkout.map((item) => (
+              <Typography key={item.id}>
+                {item.name} ({item.size}) Total: ${item.price * item.quantity}
+              </Typography>
+            ))}
           </Grid>
         </Grid>
         <Box
