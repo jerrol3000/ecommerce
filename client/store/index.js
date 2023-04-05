@@ -6,6 +6,7 @@ import products from "./ProductSlice";
 import checkout from "./checkoutSlice";
 import review from "./reviewSlice";
 import rating from "./ratingSlice";
+
 const store = configureStore({
   reducer: { auth, products, checkout, review, rating },
   middleware: (getDefaultMiddleware) =>

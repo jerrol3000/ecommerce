@@ -234,7 +234,7 @@ const PurchaseForm = () => {
                   <MenuItem value="3x3">3x3</MenuItem>
                   <MenuItem value="4x4">4x4</MenuItem>
                   <MenuItem value="5x5">5x5</MenuItem>
-                  <MenuItem value="custom">Custom</MenuItem>
+                  {/* <MenuItem value="custom">Custom</MenuItem> */}
                 </Select>
               </FormControl>
               {showCustomInputSize && (
@@ -272,7 +272,7 @@ const PurchaseForm = () => {
                       {amount}
                     </MenuItem>
                   ))}
-                  <MenuItem value="custom">Custom</MenuItem>
+                  {/* <MenuItem value="custom">Custom</MenuItem> */}
                 </Select>
               </FormControl>
               {customInputQuantity && (

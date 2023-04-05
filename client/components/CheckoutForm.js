@@ -146,6 +146,8 @@ const ProgressBar = styled("div")(({ progress }) => ({
 const PurchaseForm = () => {
   const [step, setStep] = useState(1);
   const [progress, setProgress] = useState(0);
+  const [shippingInfoCompleted, setShippingInfoCompleted] = useState(false);
+  const [creditCardInfoCompleted, setCreditCardInfoCompleted] = useState(true);
   const progressRef = useRef(null);
 
   const { id } = useSelector((state) => state.auth);
@@ -165,8 +167,42 @@ const PurchaseForm = () => {
     dispatch(getLocalCart());
   }, []);
 
+  let shippingdata = localStorage.getItem("shippingInfo")
+    ? JSON.parse(localStorage.getItem("shippingInfo"))
+    : {};
+
+  console.log("shippingdata", shippingdata);
   const handleNext = (event) => {
     event.preventDefault();
+    if (step === 1) {
+      const {
+        firstName,
+        lastName,
+        address,
+        city,
+        state,
+        zip,
+        email,
+        phoneNumber,
+      } = shippingdata;
+      if (
+        firstName &&
+        lastName &&
+        address &&
+        city &&
+        state &&
+        zip &&
+        email &&
+        phoneNumber
+      ) {
+        setShippingInfoCompleted(true);
+      }
+    }
+    if (step === 2 && !creditCardInfoCompleted) {
+      // Show a banner indicating that the user needs to complete the form
+      return;
+    }
+
     setProgress((prevProgress) => prevProgress + 33.33);
     anime({
       targets: ".form-step",
@@ -175,13 +211,15 @@ const PurchaseForm = () => {
       duration: 500,
       complete: () => setStep((prevStep) => prevStep + 1),
     });
-    if (step === null) {
-      localStorage.removeItem("cardData");
-      localStorage.removeItem("shippingInfo");
-      localStorage.removeItem("billingAddress");
-    }
   };
 
+  const handleShippingInfoChange = (data) => {
+    localStorage.setItem("shippingInfo", JSON.stringify(data));
+  };
+
+  const handleCreditCardInfoComplete = () => {
+    return setCreditCardInfoCompleted(true);
+  };
   const handleBack = (event) => {
     event.preventDefault();
     setProgress((prevProgress) => prevProgress - 33.33);
@@ -198,11 +236,19 @@ const PurchaseForm = () => {
     switch (step) {
       case 1:
         return (
-          <ShippingInfo className="form-step" animate={{ translateX: 0 }} />
+          <ShippingInfo
+            className="form-step"
+            animate={{ translateX: 0 }}
+            handleShippingInfoChange={handleShippingInfoChange}
+          />
         );
       case 2:
         return (
-          <CreditCardInfo className="form-step" animate={{ translateX: 0 }} />
+          <CreditCardInfo
+            className="form-step"
+            animate={{ translateX: 0 }}
+            onComplete={handleCreditCardInfoComplete}
+          />
         );
       case 3:
         return (
