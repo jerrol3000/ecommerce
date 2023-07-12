@@ -14,19 +14,21 @@ function Home() {
 
   return (
     <div className="product-container">
-      {products.map((product) => {
-        return (
-          <div key={product.id}>
-            <Product
-              name={product.name}
-              description={product.description}
-              image={product.image}
-              price={product.price}
-              id={product.id}
-            />
-          </div>
-        );
-      })}
+      {products.length
+        ? products.map((product) => {
+            return (
+              <div key={product.id}>
+                <Product
+                  name={product.name}
+                  description={product.description}
+                  image={product.image}
+                  price={product.price}
+                  id={product.id}
+                />
+              </div>
+            );
+          })
+        : "Cannot reaah databse"}
     </div>
   );
 }
