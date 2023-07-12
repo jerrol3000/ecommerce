@@ -14,7 +14,7 @@ function Home() {
 
   return (
     <div className="product-container">
-      {products.map((product) => {
+      {/* {products.map((product) => {
         return (
           <div key={product.id}>
             <Product
@@ -26,7 +26,8 @@ function Home() {
             />
           </div>
         );
-      })}
+      })} */}
+      <h1>HELLO I AM HOME</h1>
     </div>
   );
 }
