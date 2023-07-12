@@ -22,7 +22,8 @@ if (process.env.DATABASE_URL) {
 }
 
 const db = new Sequelize(
-  process.env.DATABASE_URL || `postgres://localhost:5432/${databaseName}`,
+  process.env.DATABASE_URL ||
+    `postgres://wwfcumhe:K6plsw5SP1gFlqHHMN-eF1RhNwB45Bz5@stampy.db.elephantsql.com/wwfcumhe`,
   config
 );
 module.exports = db;
