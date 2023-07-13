@@ -14,7 +14,7 @@ function Home() {
 
   return (
     <div className="product-container">
-      {products.length
+      {products
         ? products.map((product) => {
             return (
               <div key={product.id}>
