@@ -6,7 +6,7 @@ import "./css/product.css";
 
 function Home() {
   const dispatch = useDispatch();
-  const { products } = useSelector((state) => state.products);
+  const { products } = useSelector((state) => state.products) || [];
 
   useEffect(() => {
     dispatch(fetchProducts());
