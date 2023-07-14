@@ -8,9 +8,11 @@ export const createOrder = createAsyncThunk(
       const { data } = await axios.post(`/api/checkout`, newOrder, {
         headers: { "Content-Type": "multipart/form-data" },
       });
+
       return data;
     } catch (error) {
       console.log(error);
+      throw error;
     }
   }
 );

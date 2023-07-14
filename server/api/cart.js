@@ -41,6 +41,7 @@ router.post("/", upload.single("image"), async (req, res) => {
   const { userId, productId, price, size, quantity, name } = req.body;
   let { path } = req.file;
   try {
+    console.log("first", req.body);
     const cart = await Cart.create({
       name,
       userId,

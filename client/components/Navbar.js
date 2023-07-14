@@ -69,6 +69,7 @@ const Navbar = () => {
   const currentCart = localStorage.getItem("cart");
   const { checkout } = useSelector((state) => state);
 
+  console.log("cart", checkout);
   const cart = isLoggedIn ? checkout : guestCart ? guestCart : [];
   useEffect(() => {
     if (editingItemId !== null) {
@@ -201,7 +202,7 @@ const Navbar = () => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        {cart.length ? (
+        {cart.length > 0 ? (
           cart.map((item, i) => (
             <MenuItem key={i}>
               <div
@@ -280,7 +281,7 @@ const Navbar = () => {
           <MenuItem>Cart is empty</MenuItem>
         )}
         <MenuItem onClick={handleClose} style={{ justifyContent: "center" }}>
-          {cart.length && (
+          {cart.length > 0 && (
             <Button
               variant="contained"
               color="primary"
